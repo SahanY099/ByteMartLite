@@ -29,6 +29,7 @@ export type AuthState = {
   user: UserData;
   isAuthenticated: () => boolean;
   setUser: (userData: UserData) => void;
+  clearUser: () => void;
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -59,6 +60,11 @@ export const useAuthStore = create<AuthState>()(
             token: { ...userData.token, expiresAt: expiresAtDate },
             isAuthenticated: true,
           },
+        }));
+      },
+      clearUser: () => {
+        set(() => ({
+          user: anonymousUser,
         }));
       },
     }),
