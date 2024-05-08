@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -17,6 +19,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['geist-sans', ...defaultTheme.fontFamily.sans],
+        mono: ['geist-sans', ...defaultTheme.fontFamily.mono],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -74,4 +80,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

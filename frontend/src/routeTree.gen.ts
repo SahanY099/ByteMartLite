@@ -13,31 +13,43 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as BrowseImport } from './routes/_browse'
 
 // Create Virtual Routes
 
-const IndexLazyImport = createFileRoute('/')()
+const BrowseIndexLazyImport = createFileRoute('/_browse/')()
 
 // Create/Update Routes
 
-const IndexLazyRoute = IndexLazyImport.update({
-  path: '/',
+const BrowseRoute = BrowseImport.update({
+  id: '/_browse',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
+
+const BrowseIndexLazyRoute = BrowseIndexLazyImport.update({
+  path: '/',
+  getParentRoute: () => BrowseRoute,
+} as any).lazy(() => import('./routes/_browse/index.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      preLoaderRoute: typeof IndexLazyImport
+    '/_browse': {
+      preLoaderRoute: typeof BrowseImport
       parentRoute: typeof rootRoute
+    }
+    '/_browse/': {
+      preLoaderRoute: typeof BrowseIndexLazyImport
+      parentRoute: typeof BrowseImport
     }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexLazyRoute])
+export const routeTree = rootRoute.addChildren([
+  BrowseRoute.addChildren([BrowseIndexLazyRoute]),
+])
 
 /* prettier-ignore-end */
