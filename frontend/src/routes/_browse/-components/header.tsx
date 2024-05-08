@@ -1,11 +1,14 @@
+import { Container } from "@/components/container";
+import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Logo } from "./logo";
 
 export const Header = () => {
   return (
-    <div className="flex items-center justify-between px-8 py-4 shadow-sm dark:shadow-white/20">
-      <Logo />
-      <ThemeToggle />
-    </div>
+    <header className="px-8 py-4 shadow-sm dark:shadow-white/20">
+      <Container className="flex flex-row items-center justify-between">
+        <Logo />
+        <ThemeToggle />
+      </Container>
+    </header>
   );
 };

@@ -1,5 +1,6 @@
-import { LogoIcon } from "@/components/logo-icon";
 import { Link, ToPathOption } from "@tanstack/react-router";
+
+import { LogoIcon } from "./logo-icon";
 
 type LogoProps = {
   to?: ToPathOption;

@@ -14,10 +14,13 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as BrowseImport } from './routes/_browse'
+import { Route as AuthImport } from './routes/_auth'
 
 // Create Virtual Routes
 
 const BrowseIndexLazyImport = createFileRoute('/_browse/')()
+const AuthSignupLazyImport = createFileRoute('/_auth/signup')()
+const AuthLoginLazyImport = createFileRoute('/_auth/login')()
 
 // Create/Update Routes
 
@@ -26,18 +29,45 @@ const BrowseRoute = BrowseImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const BrowseIndexLazyRoute = BrowseIndexLazyImport.update({
   path: '/',
   getParentRoute: () => BrowseRoute,
 } as any).lazy(() => import('./routes/_browse/index.lazy').then((d) => d.Route))
 
+const AuthSignupLazyRoute = AuthSignupLazyImport.update({
+  path: '/signup',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() => import('./routes/_auth/signup.lazy').then((d) => d.Route))
+
+const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() => import('./routes/_auth/login.lazy').then((d) => d.Route))
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_auth': {
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
     '/_browse': {
       preLoaderRoute: typeof BrowseImport
       parentRoute: typeof rootRoute
+    }
+    '/_auth/login': {
+      preLoaderRoute: typeof AuthLoginLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/signup': {
+      preLoaderRoute: typeof AuthSignupLazyImport
+      parentRoute: typeof AuthImport
     }
     '/_browse/': {
       preLoaderRoute: typeof BrowseIndexLazyImport
@@ -49,6 +79,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
+  AuthRoute.addChildren([AuthLoginLazyRoute, AuthSignupLazyRoute]),
   BrowseRoute.addChildren([BrowseIndexLazyRoute]),
 ])
 
