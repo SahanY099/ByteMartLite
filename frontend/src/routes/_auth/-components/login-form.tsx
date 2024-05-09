@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -80,7 +81,16 @@ export const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>
+                  Password
+                  <Link
+                    preload="intent"
+                    to="/forgot-password"
+                    className="float-right font-normal text-secondary-foreground transition hover:opacity-50"
+                  >
+                    Forgot Password?
+                  </Link>
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Enter your password"

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { getPersistStorageHandler } from "./handler";
+import { getPersistStorageHandler } from "../handler";
 
 export type UserData = {
   id: number | undefined;

@@ -1,12 +1,21 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import { LoginForm } from "./-components/login-form";
+
+import { usePasswordResetStore } from "@/store/auth";
 
 export const Route = createLazyFileRoute("/_auth/login")({
   component: Login,
 });
 
 function Login() {
+  const { clearData } = usePasswordResetStore();
+
+  useEffect(() => {
+    clearData();
+  }, [clearData]);
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8">
       <div className="flex flex-col items-center justify-center">
