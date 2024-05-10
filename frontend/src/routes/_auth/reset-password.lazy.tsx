@@ -10,7 +10,7 @@ export const Route = createLazyFileRoute("/_auth/reset-password")({
   component: ResetPassword,
 });
 
-export default function ResetPassword() {
+function ResetPassword() {
   const navigate = useNavigate({ from: "/reset-password" });
   const { code, email, resetIsComplete } = usePasswordResetStore();
 

@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as BrowseImport } from './routes/_browse'
 import { Route as AuthImport } from './routes/_auth'
+import { Route as BrowseAccountImport } from './routes/_browse/account'
 
 // Create Virtual Routes
 
@@ -23,6 +24,10 @@ const AuthSignupLazyImport = createFileRoute('/_auth/signup')()
 const AuthResetPasswordLazyImport = createFileRoute('/_auth/reset-password')()
 const AuthLoginLazyImport = createFileRoute('/_auth/login')()
 const AuthForgotPasswordLazyImport = createFileRoute('/_auth/forgot-password')()
+const BrowseAccountIndexLazyImport = createFileRoute('/_browse/account/')()
+const BrowseAccountAddressesLazyImport = createFileRoute(
+  '/_browse/account/addresses',
+)()
 
 // Create/Update Routes
 
@@ -65,6 +70,27 @@ const AuthForgotPasswordLazyRoute = AuthForgotPasswordLazyImport.update({
   import('./routes/_auth/forgot-password.lazy').then((d) => d.Route),
 )
 
+const BrowseAccountRoute = BrowseAccountImport.update({
+  path: '/account',
+  getParentRoute: () => BrowseRoute,
+} as any)
+
+const BrowseAccountIndexLazyRoute = BrowseAccountIndexLazyImport.update({
+  path: '/',
+  getParentRoute: () => BrowseAccountRoute,
+} as any).lazy(() =>
+  import('./routes/_browse/account/index.lazy').then((d) => d.Route),
+)
+
+const BrowseAccountAddressesLazyRoute = BrowseAccountAddressesLazyImport.update(
+  {
+    path: '/addresses',
+    getParentRoute: () => BrowseAccountRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/_browse/account/addresses.lazy').then((d) => d.Route),
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -76,6 +102,10 @@ declare module '@tanstack/react-router' {
     '/_browse': {
       preLoaderRoute: typeof BrowseImport
       parentRoute: typeof rootRoute
+    }
+    '/_browse/account': {
+      preLoaderRoute: typeof BrowseAccountImport
+      parentRoute: typeof BrowseImport
     }
     '/_auth/forgot-password': {
       preLoaderRoute: typeof AuthForgotPasswordLazyImport
@@ -97,6 +127,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseIndexLazyImport
       parentRoute: typeof BrowseImport
     }
+    '/_browse/account/addresses': {
+      preLoaderRoute: typeof BrowseAccountAddressesLazyImport
+      parentRoute: typeof BrowseAccountImport
+    }
+    '/_browse/account/': {
+      preLoaderRoute: typeof BrowseAccountIndexLazyImport
+      parentRoute: typeof BrowseAccountImport
+    }
   }
 }
 
@@ -109,7 +147,13 @@ export const routeTree = rootRoute.addChildren([
     AuthResetPasswordLazyRoute,
     AuthSignupLazyRoute,
   ]),
-  BrowseRoute.addChildren([BrowseIndexLazyRoute]),
+  BrowseRoute.addChildren([
+    BrowseAccountRoute.addChildren([
+      BrowseAccountAddressesLazyRoute,
+      BrowseAccountIndexLazyRoute,
+    ]),
+    BrowseIndexLazyRoute,
+  ]),
 ])
 
 /* prettier-ignore-end */

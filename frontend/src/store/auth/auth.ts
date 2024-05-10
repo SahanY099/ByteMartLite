@@ -8,6 +8,7 @@ export type UserData = {
   email: string | undefined;
   firstName: string | undefined;
   lastName: string | undefined;
+  image: string | undefined;
   token: {
     key: string | undefined;
     expiresAt: Date | undefined;
@@ -19,6 +20,7 @@ const anonymousUser = {
   email: undefined,
   firstName: undefined,
   lastName: undefined,
+  image: undefined,
   token: {
     key: undefined,
     expiresAt: undefined,

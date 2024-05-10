@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 export const Header = () => {
   return (
-    <header className="px-8 py-4 shadow-sm dark:shadow-white/20">
+    <header className="py-4 shadow-sm dark:shadow-white/20">
       <Container className="flex flex-row items-center justify-between">
         <Logo />
         <div className="flex flex-row gap-4">

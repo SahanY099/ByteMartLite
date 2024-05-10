@@ -25,6 +25,7 @@ class AuthResource extends JsonResource
             'firstName' => $this->f_name,
             'lastName' => $this->l_name,
             'email' => $this->email,
+            'image' => $this->getFirstMediaUrl('account-images'),
             'token' => [
                 'key' => $this->token->plainTextToken,
                 'expiresAt' => $this->token->accessToken->expires_at
