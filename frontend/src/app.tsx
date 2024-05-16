@@ -14,6 +14,7 @@ const router = createRouter({
   context: {
     auth: undefined!,
   },
+  defaultPreloadStaleTime: 0,
 });
 
 export function App() {

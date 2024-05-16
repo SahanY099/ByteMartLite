@@ -58,7 +58,7 @@ export const UserMenu = () => {
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={clearUser}>
           Logout
-          <LogOut className="ml-2" />
+          <LogOut className="ml-auto h-4 w-4" />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

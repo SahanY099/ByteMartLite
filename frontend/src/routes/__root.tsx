@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 
 import { ThemeProvider } from "@/components/theme-provider";
 
+import { queryClient } from "@/lib/query-client";
 import { AuthState } from "@/store/auth";
 
 interface RouterContext {
@@ -15,8 +16,6 @@ interface RouterContext {
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => <Root />,
 });
-
-const queryClient = new QueryClient();
 
 function Root() {
   return (

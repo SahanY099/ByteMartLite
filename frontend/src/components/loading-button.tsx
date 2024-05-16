@@ -16,7 +16,7 @@ export const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
         ref={ref}
         {...props}
         disabled={loading}
-        className={cn("w-full justify-center", className)}
+        className={cn("justify-center", className)}
       >
         {children}
         {loading && <ReloadIcon className="ml-4 animate-spin" />}

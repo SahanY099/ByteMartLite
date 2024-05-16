@@ -16,6 +16,9 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as BrowseImport } from './routes/_browse'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as BrowseAccountImport } from './routes/_browse/account'
+import { Route as BrowseAccountAddressesIndexImport } from './routes/_browse/account/addresses/index'
+import { Route as BrowseAccountAddressesNewRouteImport } from './routes/_browse/account/addresses/new/route'
+import { Route as BrowseAccountAddressesAddressIdEditImport } from './routes/_browse/account/addresses/$addressId/edit'
 
 // Create Virtual Routes
 
@@ -25,9 +28,6 @@ const AuthResetPasswordLazyImport = createFileRoute('/_auth/reset-password')()
 const AuthLoginLazyImport = createFileRoute('/_auth/login')()
 const AuthForgotPasswordLazyImport = createFileRoute('/_auth/forgot-password')()
 const BrowseAccountIndexLazyImport = createFileRoute('/_browse/account/')()
-const BrowseAccountAddressesLazyImport = createFileRoute(
-  '/_browse/account/addresses',
-)()
 
 // Create/Update Routes
 
@@ -82,14 +82,35 @@ const BrowseAccountIndexLazyRoute = BrowseAccountIndexLazyImport.update({
   import('./routes/_browse/account/index.lazy').then((d) => d.Route),
 )
 
-const BrowseAccountAddressesLazyRoute = BrowseAccountAddressesLazyImport.update(
-  {
-    path: '/addresses',
+const BrowseAccountAddressesIndexRoute =
+  BrowseAccountAddressesIndexImport.update({
+    path: '/addresses/',
     getParentRoute: () => BrowseAccountRoute,
-  } as any,
-).lazy(() =>
-  import('./routes/_browse/account/addresses.lazy').then((d) => d.Route),
-)
+  } as any).lazy(() =>
+    import('./routes/_browse/account/addresses/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const BrowseAccountAddressesNewRouteRoute =
+  BrowseAccountAddressesNewRouteImport.update({
+    path: '/addresses/new',
+    getParentRoute: () => BrowseAccountRoute,
+  } as any).lazy(() =>
+    import('./routes/_browse/account/addresses/new/route.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const BrowseAccountAddressesAddressIdEditRoute =
+  BrowseAccountAddressesAddressIdEditImport.update({
+    path: '/addresses/$addressId/edit',
+    getParentRoute: () => BrowseAccountRoute,
+  } as any).lazy(() =>
+    import('./routes/_browse/account/addresses/$addressId/edit.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -127,12 +148,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseIndexLazyImport
       parentRoute: typeof BrowseImport
     }
-    '/_browse/account/addresses': {
-      preLoaderRoute: typeof BrowseAccountAddressesLazyImport
-      parentRoute: typeof BrowseAccountImport
-    }
     '/_browse/account/': {
       preLoaderRoute: typeof BrowseAccountIndexLazyImport
+      parentRoute: typeof BrowseAccountImport
+    }
+    '/_browse/account/addresses/new': {
+      preLoaderRoute: typeof BrowseAccountAddressesNewRouteImport
+      parentRoute: typeof BrowseAccountImport
+    }
+    '/_browse/account/addresses/': {
+      preLoaderRoute: typeof BrowseAccountAddressesIndexImport
+      parentRoute: typeof BrowseAccountImport
+    }
+    '/_browse/account/addresses/$addressId/edit': {
+      preLoaderRoute: typeof BrowseAccountAddressesAddressIdEditImport
       parentRoute: typeof BrowseAccountImport
     }
   }
@@ -149,8 +178,10 @@ export const routeTree = rootRoute.addChildren([
   ]),
   BrowseRoute.addChildren([
     BrowseAccountRoute.addChildren([
-      BrowseAccountAddressesLazyRoute,
       BrowseAccountIndexLazyRoute,
+      BrowseAccountAddressesNewRouteRoute,
+      BrowseAccountAddressesIndexRoute,
+      BrowseAccountAddressesAddressIdEditRoute,
     ]),
     BrowseIndexLazyRoute,
   ]),

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Accounts;
 
-use App\Http\Requests\UpdateAccountRequest;
-use App\Http\Resources\AccountResource;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Accounts\AccountResource;
+use App\Http\Requests\Accounts\UpdateAccountRequest;
 
 class AccountController extends Controller
 {

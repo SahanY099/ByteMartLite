@@ -4,11 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+
+use App\Models\Accounts\Address;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -53,5 +56,10 @@ class User extends Authenticatable implements HasMedia
     {
         $this->addMediaCollection('account-images')->singleFile()->useDisk('public')
             ->acceptsMimeTypes(['image/jpeg", "image/jpg", "image/png']);
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
     }
 }
