@@ -29,26 +29,32 @@ const anonymousUser = {
 
 export type AuthState = {
   user: UserData;
-  isAuthenticated: () => boolean;
+  checkAuthState: () => boolean;
   setUser: (userData: UserData) => void;
   clearUser: () => void;
+  isAuthenticated: boolean;
 };
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       user: anonymousUser,
-      isAuthenticated: () => {
+      isAuthenticated: false,
+      checkAuthState: () => {
         const state = get();
         const { expiresAt } = state.user.token;
 
         if (!expiresAt || new Date() > expiresAt) {
           set(() => ({
             user: anonymousUser,
+            isAuthenticated: false,
           }));
           return false;
         }
 
+        set(() => ({
+          isAuthenticated: true,
+        }));
         return true;
       },
       setUser: (userData) => {
@@ -67,6 +73,7 @@ export const useAuthStore = create<AuthState>()(
       clearUser: () => {
         set(() => ({
           user: anonymousUser,
+          isAuthenticated: false,
         }));
       },
     }),

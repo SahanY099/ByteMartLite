@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -13,18 +13,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { useLogout } from "@/services/auth";
 import { useAuthStore } from "@/store/auth";
 
 export const UserMenu = () => {
-  const { clearUser, isAuthenticated, user } = useAuthStore();
-  const [shouldShowMenu, setShouldShowMenu] = useState(false);
+  const { isAuthenticated, checkAuthState, user } = useAuthStore();
+  const { mutate } = useLogout();
 
   useEffect(() => {
-    if (isAuthenticated()) setShouldShowMenu(true);
-    else setShouldShowMenu(false);
-  }, [user, isAuthenticated]);
+    checkAuthState();
+  }, [user, checkAuthState]);
 
-  if (!shouldShowMenu) {
+  if (!isAuthenticated) {
     return (
       <Link to="/login">
         <Button>Login</Button>
@@ -56,7 +56,7 @@ export const UserMenu = () => {
           <Link to="/account">Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={clearUser}>
+        <DropdownMenuItem onClick={() => mutate()}>
           Logout
           <LogOut className="ml-auto h-4 w-4" />
         </DropdownMenuItem>

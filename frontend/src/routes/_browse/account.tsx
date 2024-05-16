@@ -11,7 +11,7 @@ import { Container } from "@/components/container";
 export const Route = createFileRoute("/_browse/account")({
   component: AccountLayout,
   beforeLoad: ({ context, location }) => {
-    if (!context.auth.isAuthenticated()) {
+    if (!context.auth.checkAuthState()) {
       throw redirect({
         to: "/login",
         search: {

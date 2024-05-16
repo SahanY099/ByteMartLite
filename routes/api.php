@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Accounts\AdministrativeAreaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,6 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\AddressController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Accounts\AdministrativeAreaController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,6 +17,7 @@ Route::prefix('auth')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('/signup', 'signup');
         Route::post('/login', 'login');
+        Route::post('/logout', 'logout')->middleware('auth:sanctum');
     });
     Route::controller(PasswordResetController::class)->group(function () {
         Route::post('/verify-otp', 'verifyOtp');

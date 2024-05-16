@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Auth;
 
-use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\Auth\AuthResource;
 use App\Http\Requests\Auth\SignupRequest;
 
@@ -55,5 +55,12 @@ class AuthController extends Controller
 
         $token = $user->createToken('user', ['*'], $expiration_time);
         return new AuthResource($user, $token);
+    }
+
+    public function logout()
+    {
+        Auth::user()->currentAccessToken()->delete();
+
+        return response()->noContent();
     }
 }
