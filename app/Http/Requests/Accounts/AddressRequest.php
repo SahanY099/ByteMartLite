@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Accounts;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddressRequest extends FormRequest

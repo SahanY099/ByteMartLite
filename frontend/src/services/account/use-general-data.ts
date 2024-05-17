@@ -18,18 +18,17 @@ export const useGetGeneralData = () => {
 export const useUpdateImage = () => {
   return useMutation({
     mutationFn: async (image: File) => {
-      return await axiosClient.post(
-        "account/update-image",
-        { image },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+      const formData = new FormData();
+      formData.append("image", image);
+
+      return await axiosClient.post("account/update-image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-      );
+      });
     },
     onSuccess: () => {
-      toast.success("Image updated successfully.");
+      toast.success("Profile image updated successfully.");
     },
     onError: () => {
       toast.error("Something went wrong. Please try again later");

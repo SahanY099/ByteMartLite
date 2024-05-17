@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Accounts\AccountResource;
+use App\Http\Requests\Accounts\ProfileImageRequest;
 use App\Http\Requests\Accounts\UpdateAccountRequest;
 
 class AccountController extends Controller
@@ -37,7 +38,7 @@ class AccountController extends Controller
         //
     }
 
-    public function updateImage(Request $request)
+    public function updateImage(ProfileImageRequest $request)
     {
         /**  @var User $user */
         $user = $request->user();

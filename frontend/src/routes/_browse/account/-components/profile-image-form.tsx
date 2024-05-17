@@ -48,10 +48,10 @@ export function ProfileImageForm({ image }: ProfileImageFormProps) {
     return image;
   };
 
-  async function handleChange(values: { image?: File }) {
+  async function handleChange(values: { image?: FileList }) {
     console.log(values);
     if (values.image && !isPending) {
-      await mutateAsync(values.image);
+      await mutateAsync(values.image?.[0]);
       await queryClient.invalidateQueries({
         queryKey: ["account-data", "general"],
       });
