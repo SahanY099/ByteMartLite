@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as DashboardImport } from './routes/dashboard'
 import { Route as BrowseImport } from './routes/_browse'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as BrowseAccountImport } from './routes/_browse/account'
@@ -30,6 +31,11 @@ const AuthForgotPasswordLazyImport = createFileRoute('/_auth/forgot-password')()
 const BrowseAccountIndexLazyImport = createFileRoute('/_browse/account/')()
 
 // Create/Update Routes
+
+const DashboardRoute = DashboardImport.update({
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const BrowseRoute = BrowseImport.update({
   id: '/_browse',
@@ -124,6 +130,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard': {
+      preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
     '/_browse/account': {
       preLoaderRoute: typeof BrowseAccountImport
       parentRoute: typeof BrowseImport
@@ -185,6 +195,7 @@ export const routeTree = rootRoute.addChildren([
     ]),
     BrowseIndexLazyRoute,
   ]),
+  DashboardRoute,
 ])
 
 /* prettier-ignore-end */
