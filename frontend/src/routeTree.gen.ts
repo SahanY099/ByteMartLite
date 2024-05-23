@@ -17,6 +17,8 @@ import { Route as DashboardImport } from './routes/dashboard'
 import { Route as BrowseImport } from './routes/_browse'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as BrowseAccountImport } from './routes/_browse/account'
+import { Route as DashboardProductsIndexImport } from './routes/dashboard/products/index'
+import { Route as DashboardProductsNewRouteImport } from './routes/dashboard/products/new/route'
 import { Route as BrowseAccountAddressesIndexImport } from './routes/_browse/account/addresses/index'
 import { Route as BrowseAccountAddressesNewRouteImport } from './routes/_browse/account/addresses/new/route'
 import { Route as BrowseAccountAddressesAddressIdEditImport } from './routes/_browse/account/addresses/$addressId/edit'
@@ -86,6 +88,18 @@ const BrowseAccountIndexLazyRoute = BrowseAccountIndexLazyImport.update({
   getParentRoute: () => BrowseAccountRoute,
 } as any).lazy(() =>
   import('./routes/_browse/account/index.lazy').then((d) => d.Route),
+)
+
+const DashboardProductsIndexRoute = DashboardProductsIndexImport.update({
+  path: '/products/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardProductsNewRouteRoute = DashboardProductsNewRouteImport.update({
+  path: '/products/new',
+  getParentRoute: () => DashboardRoute,
+} as any).lazy(() =>
+  import('./routes/dashboard/products/new/route.lazy').then((d) => d.Route),
 )
 
 const BrowseAccountAddressesIndexRoute =
@@ -158,6 +172,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseIndexLazyImport
       parentRoute: typeof BrowseImport
     }
+    '/dashboard/products/new': {
+      preLoaderRoute: typeof DashboardProductsNewRouteImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/products/': {
+      preLoaderRoute: typeof DashboardProductsIndexImport
+      parentRoute: typeof DashboardImport
+    }
     '/_browse/account/': {
       preLoaderRoute: typeof BrowseAccountIndexLazyImport
       parentRoute: typeof BrowseAccountImport
@@ -195,7 +217,10 @@ export const routeTree = rootRoute.addChildren([
     ]),
     BrowseIndexLazyRoute,
   ]),
-  DashboardRoute,
+  DashboardRoute.addChildren([
+    DashboardProductsNewRouteRoute,
+    DashboardProductsIndexRoute,
+  ]),
 ])
 
 /* prettier-ignore-end */

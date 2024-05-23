@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+use App\Models\Products\Product;
 use App\Models\Accounts\Address;
 
 class User extends Authenticatable implements HasMedia
@@ -61,5 +62,10 @@ class User extends Authenticatable implements HasMedia
     public function addresses(): HasMany
     {
         return $this->hasMany(Address::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 }

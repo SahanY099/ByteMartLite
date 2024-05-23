@@ -6,18 +6,27 @@ import { Button } from "@/components/ui/button";
 
 type NavItemProps = {
   name: string;
-  href: LinkOptions["to"];
+  to: LinkOptions["to"];
+  from: LinkOptions["from"];
   icon: LucideIcon;
+  exact: boolean;
 };
 
-export const NavItem = ({ name, href, icon: Icon }: NavItemProps) => {
+export const NavItem = ({
+  name,
+  to,
+  icon: Icon,
+  exact,
+  from,
+}: NavItemProps) => {
   return (
     <Hint label={name} side="right">
       <Button size="icon" variant="ghost" asChild className="">
         <Link
-          to={href}
+          to={to}
           activeProps={{ className: "bg-accent" }}
-          activeOptions={{ exact: false }}
+          activeOptions={{ exact }}
+          from={from}
         >
           <Icon className="h-5 w-5" />
         </Link>

@@ -55,6 +55,9 @@ export const UserMenu = () => {
         <DropdownMenuItem asChild>
           <Link to="/account">Settings</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/dashboard">Dashboard</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => mutate()}>
           Logout

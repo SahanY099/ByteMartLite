@@ -6,8 +6,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\AddressController;
+use App\Http\Controllers\products\CategoryController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Products\ProductManagementController;
 use App\Http\Controllers\Accounts\AdministrativeAreaController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -50,5 +53,26 @@ Route::prefix('account')->group(function () {
                 Route::delete('/{id}/make-default', 'makeDefault');
             });
         });
+    });
+});
+
+Route::prefix('seller')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::prefix('products')->group(function () {
+            Route::controller(ProductManagementController::class)->group(function () {
+                // Route::get('/', 'index');
+                Route::post('/', 'store');
+                // Route::get('/{id}', 'show');
+                // Route::post('/{id}', 'update');
+                // Route::delete('/{id}', 'destroy');
+            });
+        });
+
+    });
+});
+
+Route::prefix('categories')->group(function () {
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('/', 'index');
     });
 });
