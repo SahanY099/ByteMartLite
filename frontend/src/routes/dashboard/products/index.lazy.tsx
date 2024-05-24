@@ -1,8 +1,6 @@
-import { queryClient } from "@/lib/query-client";
-import { productsQueryOptions } from "@/services/products";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link, createLazyFileRoute } from "@tanstack/react-router";
 import { ListFilter, PlusCircle } from "lucide-react";
-import { z } from "zod";
 
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -40,19 +38,21 @@ import {
 } from "@/components/ui/table";
 import { UserMenu } from "@/routes/_browse/-components/user-menu";
 import { MobileNav } from "@/routes/dashboard/-components/mobile-nav";
-import { ProductRowSkeleton } from "@/routes/dashboard/products/-components/product-row";
+import { ProductRow } from "@/routes/dashboard/products/-components/product-row";
+import { TablePagination } from "@/routes/dashboard/products/-components/table-pagination";
 
-const routeParamSchema = z.object({
-  page: z.number().catch(1),
+import { productsQueryOptions } from "@/services/products";
+
+export const Route = createLazyFileRoute("/dashboard/products/")({
+  component: Products,
 });
 
-export const Route = createFileRoute("/dashboard/products/")({
-  validateSearch: (search) => routeParamSchema.parse(search),
-  loaderDeps: ({ search: { page } }) => ({ page }),
-  loader: ({ deps: { page } }) => {
-    return queryClient.ensureQueryData(productsQueryOptions(page));
-  },
-  pendingComponent: () => (
+function Products() {
+  const { page } = Route.useSearch();
+  const { data } = useSuspenseQuery(productsQueryOptions(page));
+  const products = data?.data;
+
+  return (
     <div className="pd:4 flex flex-col gap-4">
       <header className="sticky top-0 z-30 flex h-14 flex-row items-center justify-between bg-background px-4 sm:static sm:h-auto sm:bg-transparent sm:pt-2.5 xl:pt-0">
         <div className="flex flex-row items-center gap-4 sm:hidden">
@@ -102,11 +102,13 @@ export const Route = createFileRoute("/dashboard/products/")({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button size="sm" className="h-7 gap-1">
-            <PlusCircle className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add Product
-            </span>
+          <Button size="sm" className="gap-1" asChild>
+            <Link to="/dashboard/products/new">
+              <PlusCircle className="h-3.5 w-3.5" />
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Add Product
+              </span>
+            </Link>
           </Button>
         </div>
 
@@ -139,17 +141,24 @@ export const Route = createFileRoute("/dashboard/products/")({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <ProductRowSkeleton />
-                <ProductRowSkeleton />
-                <ProductRowSkeleton />
-                <ProductRowSkeleton />
-                <ProductRowSkeleton />
+                {products?.map((product) => (
+                  <ProductRow
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    price={product.price}
+                    imageUrl={product.image}
+                    dateCreated={product.createdAt}
+                  />
+                ))}
               </TableBody>
             </Table>
           </CardContent>
-          <CardFooter>{/* <TablePagination /> */}</CardFooter>
+          <CardFooter>
+            <TablePagination />
+          </CardFooter>
         </Card>
       </div>
     </div>
-  ),
-});
+  );
+}

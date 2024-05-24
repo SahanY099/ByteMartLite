@@ -60,7 +60,7 @@ Route::prefix('seller')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('products')->group(function () {
             Route::controller(ProductManagementController::class)->group(function () {
-                // Route::get('/', 'index');
+                Route::get('/', 'index');
                 Route::post('/', 'store');
                 // Route::get('/{id}', 'show');
                 // Route::post('/{id}', 'update');

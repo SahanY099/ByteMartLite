@@ -1,8 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  queryOptions,
+  useMutation,
+} from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { axiosClient } from "@/lib/axios-client";
-import { ProductManagementData } from "@/types/products";
+import { Product, ProductManagementData } from "@/types/products";
+import { PaginatedResponse } from "@/types/response-types";
 
 export const useCreateProduct = () => {
   return useMutation({
@@ -32,3 +37,13 @@ export const useCreateProduct = () => {
     },
   });
 };
+
+export const productsQueryOptions = (page: number) =>
+  queryOptions({
+    queryKey: ["dashboard", "products", `page=${page}`],
+    queryFn: async () => {
+      const { data } = await axiosClient.get(`seller/products?page=${page}`);
+      return data as PaginatedResponse<Product>;
+    },
+    placeholderData: keepPreviousData,
+  });

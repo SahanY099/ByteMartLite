@@ -52,10 +52,10 @@ import { useCategories, useCreateProduct } from "@/services/products";
 import { ProductManagementData } from "@/types/products";
 
 export const Route = createLazyFileRoute("/dashboard/products/new")({
-  component: Dashboard,
+  component: NewProduct,
 });
 
-export function Dashboard() {
+export function NewProduct() {
   const navigate = useNavigate({ from: "/account/addresses/new" });
 
   const { data: categories } = useCategories();

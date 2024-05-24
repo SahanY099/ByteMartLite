@@ -93,7 +93,9 @@ const BrowseAccountIndexLazyRoute = BrowseAccountIndexLazyImport.update({
 const DashboardProductsIndexRoute = DashboardProductsIndexImport.update({
   path: '/products/',
   getParentRoute: () => DashboardRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/dashboard/products/index.lazy').then((d) => d.Route),
+)
 
 const DashboardProductsNewRouteRoute = DashboardProductsNewRouteImport.update({
   path: '/products/new',

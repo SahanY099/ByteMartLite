@@ -8,13 +8,17 @@ use App\Models\User;
 use App\Models\Products\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\ProductManagementRequest;
+use App\Http\Resources\products\ProductManagementListCollection;
 
 class ProductManagementController extends Controller
 {
     public function index(Request $request)
     {
-        // **  @var User $user */
+        /**  @var User $user */
         $user = $request->user();
+
+        $products = $user->products()->paginate(10);
+        return new ProductManagementListCollection($products);
     }
 
     public function store(ProductManagementRequest $request)
