@@ -12,25 +12,31 @@ import { createFileRoute } from '@tanstack/react-router'
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as DashboardImport } from './routes/dashboard'
-import { Route as BrowseImport } from './routes/_browse'
-import { Route as AuthImport } from './routes/_auth'
-import { Route as BrowseAccountImport } from './routes/_browse/account'
-import { Route as DashboardProductsIndexImport } from './routes/dashboard/products/index'
-import { Route as DashboardProductsNewRouteImport } from './routes/dashboard/products/new/route'
-import { Route as BrowseAccountAddressesIndexImport } from './routes/_browse/account/addresses/index'
-import { Route as BrowseAccountAddressesNewRouteImport } from './routes/_browse/account/addresses/new/route'
-import { Route as BrowseAccountAddressesAddressIdEditImport } from './routes/_browse/account/addresses/$addressId/edit'
+import { Route as rootRoute } from './routes/~__root'
+import { Route as DashboardImport } from './routes/~dashboard'
+import { Route as BrowseImport } from './routes/~_browse'
+import { Route as AuthImport } from './routes/~_auth'
+import { Route as BrowseAccountImport } from './routes/~_browse/~account'
+import { Route as DashboardProductsNewRouteImport } from './routes/~dashboard/~products/~new/~route'
+import { Route as DashboardProductsIndexImport } from './routes/~dashboard/~products/~index'
+import { Route as BrowseAccountAddressesNewRouteImport } from './routes/~_browse/~account/~addresses/~new/~route'
+import { Route as BrowseAccountAddressesIndexImport } from './routes/~_browse/~account/~addresses/~index'
+import { Route as BrowseAccountAddressesAddressIdEditImport } from './routes/~_browse/~account/~addresses/~$addressId/~edit'
 
 // Create Virtual Routes
 
+const AuthSignupRouteLazyImport = createFileRoute('/_auth/signup')()
+const AuthResetPasswordRouteLazyImport = createFileRoute(
+  '/_auth/reset-password',
+)()
+const AuthLoginRouteLazyImport = createFileRoute('/_auth/login')()
+const AuthForgotPasswordRouteLazyImport = createFileRoute(
+  '/_auth/forgot-password',
+)()
 const BrowseIndexLazyImport = createFileRoute('/_browse/')()
-const AuthSignupLazyImport = createFileRoute('/_auth/signup')()
-const AuthResetPasswordLazyImport = createFileRoute('/_auth/reset-password')()
-const AuthLoginLazyImport = createFileRoute('/_auth/login')()
-const AuthForgotPasswordLazyImport = createFileRoute('/_auth/forgot-password')()
-const BrowseAccountIndexLazyImport = createFileRoute('/_browse/account/')()
+const BrowseAccountgeneralIndexLazyImport = createFileRoute(
+  '/_browse/account/(general)/',
+)()
 
 // Create/Update Routes
 
@@ -49,33 +55,42 @@ const AuthRoute = AuthImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthSignupRouteLazyRoute = AuthSignupRouteLazyImport.update({
+  path: '/signup',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/~_auth/~signup/~route.lazy').then((d) => d.Route),
+)
+
+const AuthResetPasswordRouteLazyRoute = AuthResetPasswordRouteLazyImport.update(
+  {
+    path: '/reset-password',
+    getParentRoute: () => AuthRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/~_auth/~reset-password/~route.lazy').then((d) => d.Route),
+)
+
+const AuthLoginRouteLazyRoute = AuthLoginRouteLazyImport.update({
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/~_auth/~login/~route.lazy').then((d) => d.Route),
+)
+
+const AuthForgotPasswordRouteLazyRoute =
+  AuthForgotPasswordRouteLazyImport.update({
+    path: '/forgot-password',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/~_auth/~forgot-password/~route.lazy').then((d) => d.Route),
+  )
+
 const BrowseIndexLazyRoute = BrowseIndexLazyImport.update({
   path: '/',
   getParentRoute: () => BrowseRoute,
-} as any).lazy(() => import('./routes/_browse/index.lazy').then((d) => d.Route))
-
-const AuthSignupLazyRoute = AuthSignupLazyImport.update({
-  path: '/signup',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() => import('./routes/_auth/signup.lazy').then((d) => d.Route))
-
-const AuthResetPasswordLazyRoute = AuthResetPasswordLazyImport.update({
-  path: '/reset-password',
-  getParentRoute: () => AuthRoute,
 } as any).lazy(() =>
-  import('./routes/_auth/reset-password.lazy').then((d) => d.Route),
-)
-
-const AuthLoginLazyRoute = AuthLoginLazyImport.update({
-  path: '/login',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() => import('./routes/_auth/login.lazy').then((d) => d.Route))
-
-const AuthForgotPasswordLazyRoute = AuthForgotPasswordLazyImport.update({
-  path: '/forgot-password',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./routes/_auth/forgot-password.lazy').then((d) => d.Route),
+  import('./routes/~_browse/~index.lazy').then((d) => d.Route),
 )
 
 const BrowseAccountRoute = BrowseAccountImport.update({
@@ -83,33 +98,26 @@ const BrowseAccountRoute = BrowseAccountImport.update({
   getParentRoute: () => BrowseRoute,
 } as any)
 
-const BrowseAccountIndexLazyRoute = BrowseAccountIndexLazyImport.update({
-  path: '/',
-  getParentRoute: () => BrowseAccountRoute,
+const DashboardProductsNewRouteRoute = DashboardProductsNewRouteImport.update({
+  path: '/products/new',
+  getParentRoute: () => DashboardRoute,
 } as any).lazy(() =>
-  import('./routes/_browse/account/index.lazy').then((d) => d.Route),
+  import('./routes/~dashboard/~products/~new/~route.lazy').then((d) => d.Route),
 )
 
 const DashboardProductsIndexRoute = DashboardProductsIndexImport.update({
   path: '/products/',
   getParentRoute: () => DashboardRoute,
 } as any).lazy(() =>
-  import('./routes/dashboard/products/index.lazy').then((d) => d.Route),
+  import('./routes/~dashboard/~products/~index.lazy').then((d) => d.Route),
 )
 
-const DashboardProductsNewRouteRoute = DashboardProductsNewRouteImport.update({
-  path: '/products/new',
-  getParentRoute: () => DashboardRoute,
-} as any).lazy(() =>
-  import('./routes/dashboard/products/new/route.lazy').then((d) => d.Route),
-)
-
-const BrowseAccountAddressesIndexRoute =
-  BrowseAccountAddressesIndexImport.update({
-    path: '/addresses/',
+const BrowseAccountgeneralIndexLazyRoute =
+  BrowseAccountgeneralIndexLazyImport.update({
+    path: '/',
     getParentRoute: () => BrowseAccountRoute,
   } as any).lazy(() =>
-    import('./routes/_browse/account/addresses/index.lazy').then(
+    import('./routes/~_browse/~account/~(general)/~index.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -119,7 +127,17 @@ const BrowseAccountAddressesNewRouteRoute =
     path: '/addresses/new',
     getParentRoute: () => BrowseAccountRoute,
   } as any).lazy(() =>
-    import('./routes/_browse/account/addresses/new/route.lazy').then(
+    import('./routes/~_browse/~account/~addresses/~new/~route.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const BrowseAccountAddressesIndexRoute =
+  BrowseAccountAddressesIndexImport.update({
+    path: '/addresses/',
+    getParentRoute: () => BrowseAccountRoute,
+  } as any).lazy(() =>
+    import('./routes/~_browse/~account/~addresses/~index.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -129,7 +147,7 @@ const BrowseAccountAddressesAddressIdEditRoute =
     path: '/addresses/$addressId/edit',
     getParentRoute: () => BrowseAccountRoute,
   } as any).lazy(() =>
-    import('./routes/_browse/account/addresses/$addressId/edit.lazy').then(
+    import('./routes/~_browse/~account/~addresses/~$addressId/~edit.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -154,44 +172,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseAccountImport
       parentRoute: typeof BrowseImport
     }
-    '/_auth/forgot-password': {
-      preLoaderRoute: typeof AuthForgotPasswordLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/login': {
-      preLoaderRoute: typeof AuthLoginLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/reset-password': {
-      preLoaderRoute: typeof AuthResetPasswordLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/signup': {
-      preLoaderRoute: typeof AuthSignupLazyImport
-      parentRoute: typeof AuthImport
-    }
     '/_browse/': {
       preLoaderRoute: typeof BrowseIndexLazyImport
       parentRoute: typeof BrowseImport
     }
-    '/dashboard/products/new': {
-      preLoaderRoute: typeof DashboardProductsNewRouteImport
-      parentRoute: typeof DashboardImport
+    '/_auth/forgot-password': {
+      preLoaderRoute: typeof AuthForgotPasswordRouteLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/login': {
+      preLoaderRoute: typeof AuthLoginRouteLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/reset-password': {
+      preLoaderRoute: typeof AuthResetPasswordRouteLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/signup': {
+      preLoaderRoute: typeof AuthSignupRouteLazyImport
+      parentRoute: typeof AuthImport
     }
     '/dashboard/products/': {
       preLoaderRoute: typeof DashboardProductsIndexImport
       parentRoute: typeof DashboardImport
     }
-    '/_browse/account/': {
-      preLoaderRoute: typeof BrowseAccountIndexLazyImport
+    '/dashboard/products/new': {
+      preLoaderRoute: typeof DashboardProductsNewRouteImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_browse/account/addresses/': {
+      preLoaderRoute: typeof BrowseAccountAddressesIndexImport
       parentRoute: typeof BrowseAccountImport
     }
     '/_browse/account/addresses/new': {
       preLoaderRoute: typeof BrowseAccountAddressesNewRouteImport
       parentRoute: typeof BrowseAccountImport
     }
-    '/_browse/account/addresses/': {
-      preLoaderRoute: typeof BrowseAccountAddressesIndexImport
+    '/_browse/account/(general)/': {
+      preLoaderRoute: typeof BrowseAccountgeneralIndexLazyImport
       parentRoute: typeof BrowseAccountImport
     }
     '/_browse/account/addresses/$addressId/edit': {
@@ -205,23 +223,23 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   AuthRoute.addChildren([
-    AuthForgotPasswordLazyRoute,
-    AuthLoginLazyRoute,
-    AuthResetPasswordLazyRoute,
-    AuthSignupLazyRoute,
+    AuthForgotPasswordRouteLazyRoute,
+    AuthLoginRouteLazyRoute,
+    AuthResetPasswordRouteLazyRoute,
+    AuthSignupRouteLazyRoute,
   ]),
   BrowseRoute.addChildren([
     BrowseAccountRoute.addChildren([
-      BrowseAccountIndexLazyRoute,
-      BrowseAccountAddressesNewRouteRoute,
       BrowseAccountAddressesIndexRoute,
+      BrowseAccountAddressesNewRouteRoute,
+      BrowseAccountgeneralIndexLazyRoute,
       BrowseAccountAddressesAddressIdEditRoute,
     ]),
     BrowseIndexLazyRoute,
   ]),
   DashboardRoute.addChildren([
-    DashboardProductsNewRouteRoute,
     DashboardProductsIndexRoute,
+    DashboardProductsNewRouteRoute,
   ]),
 ])
 

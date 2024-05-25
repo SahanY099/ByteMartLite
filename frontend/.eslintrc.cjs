@@ -15,4 +15,12 @@ module.exports = {
       { allowConstantExport: true },
     ],
   },
-}
+  overrides: [
+    {
+      files: ['./src/components/ui/**'],
+      rules: {
+        'react-refresh/only-export-components': 'off'
+      }
+    }
+  ],
+};
