@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Products\Category;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\products\CategoryResource;
+use App\Http\Resources\Products\CategoryResource;
 
 class CategoryController extends Controller
 {

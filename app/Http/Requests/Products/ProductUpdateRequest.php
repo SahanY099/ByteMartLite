@@ -5,7 +5,7 @@ namespace App\Http\Requests\Products;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductManagementRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -33,8 +33,6 @@ class ProductManagementRequest extends FormRequest
             'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0',
             'quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'images' => 'required|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:1024',
         ];
     }
 

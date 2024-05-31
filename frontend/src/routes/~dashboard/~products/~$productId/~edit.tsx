@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -47,15 +47,20 @@ import { UserMenu } from "@/components/user-menu";
 import { MobileNav } from "@/routes/~dashboard/components/mobile-nav";
 import { ProductImageUploader } from "../components/product-image-uploader";
 
+import { queryClient } from "@/lib/query-client";
 import { ProductCreateData, productCreateSchema } from "../schemas";
 import { useCategories } from "../services";
-import { useCreateProduct } from "./services";
+import { useCreateProduct } from "../~new/services";
+import { productQueryOptions } from "./services";
 
-export const Route = createLazyFileRoute("/dashboard/products/new")({
-  component: NewProduct,
+export const Route = createFileRoute("/dashboard/products/$productId/edit")({
+  component: UpdateProduct,
+  loader: async ({ params }) => {
+    queryClient.ensureQueryData(productQueryOptions(params.productId));
+  },
 });
 
-export function NewProduct() {
+export function UpdateProduct() {
   const navigate = useNavigate({ from: "/account/addresses/new" });
 
   const { data: categories } = useCategories();

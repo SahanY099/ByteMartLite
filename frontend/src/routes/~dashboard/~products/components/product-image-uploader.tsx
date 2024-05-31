@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { cn } from "@/lib/utils";
-import { ProductManagementData } from "../schemas";
+import { ProductCreateData } from "../schemas";
 
 const ImagePlaceholder = ({ main = false }: { main?: boolean }) => {
   if (main) {
@@ -38,7 +38,7 @@ export const ProductImageUploaderToBeWorked = () => {
     Array(5).fill("") as [File | string],
   );
 
-  const form = useFormContext<ProductManagementData>();
+  const form = useFormContext<ProductCreateData>();
 
   return (
     <Card className="overflow-hidden">
@@ -103,7 +103,7 @@ export const ProductImageUploaderToBeWorked = () => {
 };
 
 export const ProductImageUploader = () => {
-  const form = useFormContext<ProductManagementData>();
+  const form = useFormContext<ProductCreateData>();
   const imageRef = form.register("images");
 
   return (

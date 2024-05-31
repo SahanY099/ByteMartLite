@@ -1,3 +1,5 @@
+import { ProductUpdateData } from "./schemas";
+
 export type ProductListItem = {
   id: number;
   name: string;
@@ -11,3 +13,11 @@ export type Category = {
   name: string;
   slug: string;
 };
+
+export type Product = {
+  id: number;
+  category: Category;
+  images: {
+    url: string;
+  }[];
+} & Omit<ProductUpdateData, "categoryId">;

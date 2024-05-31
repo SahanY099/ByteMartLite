@@ -3,7 +3,7 @@ import { z } from "zod";
 const MAX_FILE_SIZE = 1024 * 1024 * 1; // 1MB
 const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
-export const productManagementSchema = z.object({
+export const productCreateSchema = z.object({
   name: z
     .string()
     .min(1, { message: "Name is too short" })
@@ -32,4 +32,10 @@ export const productManagementSchema = z.object({
     ),
 });
 
-export type ProductManagementData = z.infer<typeof productManagementSchema>;
+export type ProductCreateData = z.infer<typeof productCreateSchema>;
+
+export const productUpdateSchema = productCreateSchema.omit({
+  images: true,
+});
+
+export type ProductUpdateData = z.infer<typeof productUpdateSchema>;

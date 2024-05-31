@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Products\Product;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Products\ProductManagementRequest;
-use App\Http\Resources\products\ProductManagementListCollection;
+use App\Http\Requests\Products\ProductCreateRequest;
+use App\Http\Requests\Products\ProductUpdateRequest;
+use App\Http\Resources\Products\ProductManagementResource;
+use App\Http\Resources\Products\ProductManagementListCollection;
 
 class ProductManagementController extends Controller
 {
@@ -21,7 +23,7 @@ class ProductManagementController extends Controller
         return new ProductManagementListCollection($products);
     }
 
-    public function store(ProductManagementRequest $request)
+    public function store(ProductCreateRequest $request)
     {
         $data = $request->validated();
 
@@ -43,12 +45,14 @@ class ProductManagementController extends Controller
         ], 201);
     }
 
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
-        //
+        $product = $request->user()->products()->findOrFail($id);
+
+        return new ProductManagementResource($product);
     }
 
-    public function update(ProductManagementRequest $request, string $id)
+    public function update(ProductUpdateRequest $request, string $id)
     {
         $data = $request->validated();
 

@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { Link, createLazyFileRoute, useRouter } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
+
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -45,42 +47,48 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { UserMenu } from "@/components/user-menu";
 import { MobileNav } from "@/routes/~dashboard/components/mobile-nav";
-import { ProductImageUploader } from "../components/product-image-uploader";
+import { ProductImages } from "./components/product-images";
 
-import { ProductCreateData, productCreateSchema } from "../schemas";
+import { ProductUpdateData, productUpdateSchema } from "../schemas";
 import { useCategories } from "../services";
-import { useCreateProduct } from "./services";
+import { productQueryOptions, useUpdateProduct } from "./services";
 
-export const Route = createLazyFileRoute("/dashboard/products/new")({
-  component: NewProduct,
-});
+export const Route = createLazyFileRoute("/dashboard/products/$productId/edit")(
+  {
+    component: NewProduct,
+  },
+);
 
 export function NewProduct() {
-  const navigate = useNavigate({ from: "/account/addresses/new" });
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
+  const { productId } = Route.useParams();
+
+  const { data } = useSuspenseQuery(productQueryOptions(productId));
   const { data: categories } = useCategories();
+  const { mutateAsync, isPending, status } = useUpdateProduct(data.id);
 
-  const { mutateAsync, isPending, status } = useCreateProduct();
-
-  const form = useForm<ProductCreateData>({
-    resolver: zodResolver(productCreateSchema),
+  const form = useForm<ProductUpdateData>({
+    resolver: zodResolver(productUpdateSchema),
     mode: "onSubmit",
     defaultValues: {
-      name: "",
-      description: "",
-      price: 0,
-      quantity: 0,
-      categoryId: undefined,
+      ...data,
+      categoryId: data.category.id,
     },
   });
 
   useEffect(() => {
-    if (status == "success")
-      navigate({ to: "/dashboard/products", search: { page: 1 } });
-  }, [status, navigate]);
+    if (status == "success") {
+      router.history.back();
+    }
+  }, [status, router]);
 
-  const onSubmit = async (data: ProductCreateData) => {
+  const onSubmit = async (data: ProductUpdateData) => {
     await mutateAsync(data);
+    await queryClient.invalidateQueries({
+      queryKey: ["dashboard", "products"],
+    });
   };
 
   return (
@@ -107,7 +115,7 @@ export function NewProduct() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>New Product</BreadcrumbPage>
+              <BreadcrumbPage>Edit</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -126,7 +134,7 @@ export function NewProduct() {
             </Link>
           </Button>
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-lg font-semibold tracking-tight sm:grow-0 sm:text-xl">
-            New Product
+            {data.name}
           </h1>
           <Badge variant="outline">In stock</Badge>
           <div className="flex items-center gap-2 sm:ml-auto">
@@ -135,9 +143,6 @@ export function NewProduct() {
                 Discard
               </Link>
             </Button>
-            {/* <Button size="sm" className="hidden sm:block">
-              Save
-            </Button> */}
           </div>
         </div>
 
@@ -225,8 +230,7 @@ export function NewProduct() {
                 </CardContent>
               </Card>
 
-              {/* product images */}
-              <ProductImageUploader />
+              <ProductImages images={data.images} />
             </div>
 
             <div className="grid auto-rows-max sm:col-span-2 md:col-span-1">

@@ -19,6 +19,7 @@ import { Route as AuthImport } from './routes/~_auth'
 import { Route as BrowseAccountImport } from './routes/~_browse/~account'
 import { Route as DashboardProductsNewRouteImport } from './routes/~dashboard/~products/~new/~route'
 import { Route as DashboardProductsIndexImport } from './routes/~dashboard/~products/~index'
+import { Route as DashboardProductsProductIdEditImport } from './routes/~dashboard/~products/~$productId/~edit'
 import { Route as BrowseAccountAddressesNewRouteImport } from './routes/~_browse/~account/~addresses/~new/~route'
 import { Route as BrowseAccountAddressesIndexImport } from './routes/~_browse/~account/~addresses/~index'
 import { Route as BrowseAccountAddressesAddressIdEditImport } from './routes/~_browse/~account/~addresses/~$addressId/~edit'
@@ -122,6 +123,16 @@ const BrowseAccountgeneralIndexLazyRoute =
     ),
   )
 
+const DashboardProductsProductIdEditRoute =
+  DashboardProductsProductIdEditImport.update({
+    path: '/products/$productId/edit',
+    getParentRoute: () => DashboardRoute,
+  } as any).lazy(() =>
+    import('./routes/~dashboard/~products/~$productId/~edit.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const BrowseAccountAddressesNewRouteRoute =
   BrowseAccountAddressesNewRouteImport.update({
     path: '/addresses/new',
@@ -208,6 +219,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseAccountAddressesNewRouteImport
       parentRoute: typeof BrowseAccountImport
     }
+    '/dashboard/products/$productId/edit': {
+      preLoaderRoute: typeof DashboardProductsProductIdEditImport
+      parentRoute: typeof DashboardImport
+    }
     '/_browse/account/(general)/': {
       preLoaderRoute: typeof BrowseAccountgeneralIndexLazyImport
       parentRoute: typeof BrowseAccountImport
@@ -240,6 +255,7 @@ export const routeTree = rootRoute.addChildren([
   DashboardRoute.addChildren([
     DashboardProductsIndexRoute,
     DashboardProductsNewRouteRoute,
+    DashboardProductsProductIdEditRoute,
   ]),
 ])
 

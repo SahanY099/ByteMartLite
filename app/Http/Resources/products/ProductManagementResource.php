@@ -5,7 +5,7 @@ namespace App\Http\Resources\Products;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends JsonResource
+class ProductManagementResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +17,11 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'slug' => $this->slug,
+            'price' => $this->price,
+            'description' => $this->description,
+            'quantity' => $this->quantity,
+            'category' => new CategoryResource($this->category),
+            'images' => $this->whenLoaded('media', ProductImageResource::collection($this->getMedia('product-images'))),
         ];
     }
 }

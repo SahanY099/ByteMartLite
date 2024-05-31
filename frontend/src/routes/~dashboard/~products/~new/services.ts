@@ -2,11 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { axiosClient } from "@/lib/axios-client";
-import { ProductManagementData } from "../schemas";
+import { ProductCreateData } from "../schemas";
 
 export const useCreateProduct = () => {
   return useMutation({
-    mutationFn: async (data: ProductManagementData) => {
+    mutationFn: async (data: ProductCreateData) => {
       const formData = new FormData();
 
       // Append images to the formData object

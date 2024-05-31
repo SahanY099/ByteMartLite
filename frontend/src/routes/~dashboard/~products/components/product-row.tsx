@@ -59,8 +59,8 @@ export const ProductRow = ({
             <DropdownMenuItem asChild>
               <Link
                 preload="intent"
-                to="/account/addresses/$addressId/edit"
-                params={{ addressId: id.toString() }}
+                to="/dashboard/products/$productId/edit"
+                params={{ productId: id.toString() }}
               >
                 Edit <Pen className="ml-auto h-4 w-4" />
               </Link>
