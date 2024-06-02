@@ -19,6 +19,7 @@ import { Route as AuthImport } from './routes/~_auth'
 import { Route as BrowseAccountImport } from './routes/~_browse/~account'
 import { Route as DashboardProductsNewRouteImport } from './routes/~dashboard/~products/~new/~route'
 import { Route as DashboardProductsIndexImport } from './routes/~dashboard/~products/~index'
+import { Route as BrowsehomeIndexImport } from './routes/~_browse/~(home)/~index'
 import { Route as DashboardProductsProductIdEditImport } from './routes/~dashboard/~products/~$productId/~edit'
 import { Route as BrowseAccountAddressesNewRouteImport } from './routes/~_browse/~account/~addresses/~new/~route'
 import { Route as BrowseAccountAddressesIndexImport } from './routes/~_browse/~account/~addresses/~index'
@@ -34,7 +35,6 @@ const AuthLoginRouteLazyImport = createFileRoute('/_auth/login')()
 const AuthForgotPasswordRouteLazyImport = createFileRoute(
   '/_auth/forgot-password',
 )()
-const BrowseIndexLazyImport = createFileRoute('/_browse/')()
 const BrowseAccountgeneralIndexLazyImport = createFileRoute(
   '/_browse/account/(general)/',
 )()
@@ -87,13 +87,6 @@ const AuthForgotPasswordRouteLazyRoute =
     import('./routes/~_auth/~forgot-password/~route.lazy').then((d) => d.Route),
   )
 
-const BrowseIndexLazyRoute = BrowseIndexLazyImport.update({
-  path: '/',
-  getParentRoute: () => BrowseRoute,
-} as any).lazy(() =>
-  import('./routes/~_browse/~index.lazy').then((d) => d.Route),
-)
-
 const BrowseAccountRoute = BrowseAccountImport.update({
   path: '/account',
   getParentRoute: () => BrowseRoute,
@@ -111,6 +104,13 @@ const DashboardProductsIndexRoute = DashboardProductsIndexImport.update({
   getParentRoute: () => DashboardRoute,
 } as any).lazy(() =>
   import('./routes/~dashboard/~products/~index.lazy').then((d) => d.Route),
+)
+
+const BrowsehomeIndexRoute = BrowsehomeIndexImport.update({
+  path: '/',
+  getParentRoute: () => BrowseRoute,
+} as any).lazy(() =>
+  import('./routes/~_browse/~(home)/~index.lazy').then((d) => d.Route),
 )
 
 const BrowseAccountgeneralIndexLazyRoute =
@@ -183,10 +183,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseAccountImport
       parentRoute: typeof BrowseImport
     }
-    '/_browse/': {
-      preLoaderRoute: typeof BrowseIndexLazyImport
-      parentRoute: typeof BrowseImport
-    }
     '/_auth/forgot-password': {
       preLoaderRoute: typeof AuthForgotPasswordRouteLazyImport
       parentRoute: typeof AuthImport
@@ -202,6 +198,10 @@ declare module '@tanstack/react-router' {
     '/_auth/signup': {
       preLoaderRoute: typeof AuthSignupRouteLazyImport
       parentRoute: typeof AuthImport
+    }
+    '/_browse/(home)/': {
+      preLoaderRoute: typeof BrowsehomeIndexImport
+      parentRoute: typeof BrowseImport
     }
     '/dashboard/products/': {
       preLoaderRoute: typeof DashboardProductsIndexImport
@@ -250,7 +250,7 @@ export const routeTree = rootRoute.addChildren([
       BrowseAccountgeneralIndexLazyRoute,
       BrowseAccountAddressesAddressIdEditRoute,
     ]),
-    BrowseIndexLazyRoute,
+    BrowsehomeIndexRoute,
   ]),
   DashboardRoute.addChildren([
     DashboardProductsIndexRoute,

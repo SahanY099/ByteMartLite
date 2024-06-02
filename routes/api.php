@@ -9,6 +9,7 @@ use App\Http\Controllers\Accounts\AddressController;
 use App\Http\Controllers\products\CategoryController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Products\ProductManagementController;
+use App\Http\Controllers\Products\ProductStoreFrontController;
 use App\Http\Controllers\Accounts\AdministrativeAreaController;
 
 
@@ -73,6 +74,12 @@ Route::prefix('seller')->group(function () {
 
 Route::prefix('categories')->group(function () {
     Route::controller(CategoryController::class)->group(function () {
+        Route::get('/', 'index');
+    });
+});
+
+Route::prefix('products')->group(function () {
+    Route::controller(ProductStoreFrontController::class)->group(function () {
         Route::get('/', 'index');
     });
 });

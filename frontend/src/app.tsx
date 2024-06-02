@@ -1,5 +1,6 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 
+import { queryClient } from "@/lib/query-client";
 import { useAuthStore } from "@/store/auth";
 import { routeTree } from "./routeTree.gen";
 
@@ -13,6 +14,7 @@ const router = createRouter({
   routeTree,
   context: {
     auth: undefined!,
+    queryClient,
   },
   defaultPreloadStaleTime: 0,
 });
