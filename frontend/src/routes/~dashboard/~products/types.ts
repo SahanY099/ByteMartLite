@@ -1,3 +1,4 @@
+import { Category } from "@/types/categories";
 import { ProductUpdateData } from "./schemas";
 
 export type ProductListItem = {
@@ -6,12 +7,6 @@ export type ProductListItem = {
   price: string;
   createdAt: string;
   image: string;
-};
-
-export type Category = {
-  id: number;
-  name: string;
-  slug: string;
 };
 
 export type Product = {

@@ -5,8 +5,9 @@ import {
 } from "@tanstack/react-query";
 
 import { axiosClient } from "@/lib/axios-client";
+import { categoriesQueryOptions } from "@/services/categories";
 import { PaginatedResponse } from "@/types/response-types";
-import { Category, ProductListItem } from "./types";
+import { ProductListItem } from "./types";
 
 export const productsQueryOptions = (page: number) =>
   queryOptions({
@@ -18,12 +19,4 @@ export const productsQueryOptions = (page: number) =>
     placeholderData: keepPreviousData,
   });
 
-export const useCategories = () => {
-  return useQuery({
-    queryKey: ["products", "categories"],
-    queryFn: async () => {
-      const { data } = await axiosClient.get("categories");
-      return data.data as Category[];
-    },
-  });
-};
+export const useCategories = () => useQuery(categoriesQueryOptions);

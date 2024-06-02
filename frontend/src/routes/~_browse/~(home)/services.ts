@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import { axiosClient } from "@/lib/axios-client";
-import { ProductListItem } from "./types";
+import { ProductListItem } from "../types";
 
 export const productsQueryOptions = queryOptions({
   queryKey: ["browse", "new-arrivals"],

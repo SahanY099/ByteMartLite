@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { ProductCardSkeleton } from "./components/product-card";
+import { ProductCardSkeleton } from "../components/product-card";
 
 import { productsQueryOptions } from "./services";
 

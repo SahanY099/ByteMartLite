@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/~__root'
 import { Route as DashboardImport } from './routes/~dashboard'
 import { Route as BrowseImport } from './routes/~_browse'
 import { Route as AuthImport } from './routes/~_auth'
+import { Route as BrowseSearchRouteImport } from './routes/~_browse/~search/~route'
 import { Route as BrowseAccountImport } from './routes/~_browse/~account'
 import { Route as DashboardProductsNewRouteImport } from './routes/~dashboard/~products/~new/~route'
 import { Route as DashboardProductsIndexImport } from './routes/~dashboard/~products/~index'
@@ -86,6 +87,13 @@ const AuthForgotPasswordRouteLazyRoute =
   } as any).lazy(() =>
     import('./routes/~_auth/~forgot-password/~route.lazy').then((d) => d.Route),
   )
+
+const BrowseSearchRouteRoute = BrowseSearchRouteImport.update({
+  path: '/search',
+  getParentRoute: () => BrowseRoute,
+} as any).lazy(() =>
+  import('./routes/~_browse/~search/~route.lazy').then((d) => d.Route),
+)
 
 const BrowseAccountRoute = BrowseAccountImport.update({
   path: '/account',
@@ -183,6 +191,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseAccountImport
       parentRoute: typeof BrowseImport
     }
+    '/_browse/search': {
+      preLoaderRoute: typeof BrowseSearchRouteImport
+      parentRoute: typeof BrowseImport
+    }
     '/_auth/forgot-password': {
       preLoaderRoute: typeof AuthForgotPasswordRouteLazyImport
       parentRoute: typeof AuthImport
@@ -250,6 +262,7 @@ export const routeTree = rootRoute.addChildren([
       BrowseAccountgeneralIndexLazyRoute,
       BrowseAccountAddressesAddressIdEditRoute,
     ]),
+    BrowseSearchRouteRoute,
     BrowsehomeIndexRoute,
   ]),
   DashboardRoute.addChildren([

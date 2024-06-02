@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/routes/~_browse/~(home)/components/product-card";
+import { ProductCard } from "../components/product-card";
 
 import { productsQueryOptions } from "@/routes/~_browse/~(home)/services";
 

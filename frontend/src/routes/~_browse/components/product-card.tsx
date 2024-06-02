@@ -1,5 +1,6 @@
 import { Heart, ShoppingCart } from "lucide-react";
 
+import placeholderImage from "@/assets/placeholder.svg";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,6 +18,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ProductCardProps = {
   id: number;
@@ -25,20 +27,29 @@ type ProductCardProps = {
   images: string[];
 };
 
-export const ProductCard = ({  name, price, images }: ProductCardProps) => {
+export const ProductCard = ({ name, price, images }: ProductCardProps) => {
   return (
     <Card className="max-w-64">
       <CardContent className="p-4">
         <Carousel className="group relative w-full" opts={{ loop: true }}>
           <CarouselContent>
-            {images.map((image, index) => (
-              <CarouselItem key={index}>
+            {images.length > 0 ? (
+              images.map((image, index) => (
+                <CarouselItem key={index}>
+                  <img
+                    className="aspect-[4/3] rounded-xl object-cover"
+                    src={image}
+                  />
+                </CarouselItem>
+              ))
+            ) : (
+              <CarouselItem>
                 <img
                   className="aspect-[4/3] rounded-xl object-cover"
-                  src={image}
+                  src={placeholderImage}
                 />
               </CarouselItem>
-            ))}
+            )}
           </CarouselContent>
           {images.length > 1 && (
             <>
@@ -69,19 +80,17 @@ export const ProductCardSkeleton = () => {
   return (
     <Card className="w-[254px]">
       <CardContent className="w-full p-4">
-        <div className="aspect-[4/3] w-full animate-pulse rounded-xl bg-secondary"></div>
+        <Skeleton className="aspect-[4/3] w-full rounded-xl" />
       </CardContent>
       <CardHeader>
         <CardTitle>
-          <div className="h-6 w-full animate-pulse rounded bg-secondary"></div>
+          <Skeleton className="h-6 w-full" />
         </CardTitle>
-        <CardDescription>
-          <div className="h-5 w-20 animate-pulse rounded bg-secondary"></div>
-        </CardDescription>
+        <Skeleton className="h-5 w-20" />
       </CardHeader>
       <CardFooter className="flex flex-row justify-end gap-2">
-        <div className="h-7 w-7 animate-pulse rounded bg-secondary"></div>
-        <div className="h-7 w-7 animate-pulse rounded bg-secondary"></div>
+        <Skeleton className="h-7 w-7" />
+        <Skeleton className="h-7 w-7" />
       </CardFooter>
     </Card>
   );

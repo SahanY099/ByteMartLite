@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Products\ProductStoreFrontSearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -82,4 +83,5 @@ Route::prefix('products')->group(function () {
     Route::controller(ProductStoreFrontController::class)->group(function () {
         Route::get('/', 'index');
     });
+    Route::get('/search', ProductStoreFrontSearchController::class);
 });
