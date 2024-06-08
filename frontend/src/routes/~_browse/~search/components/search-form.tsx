@@ -24,8 +24,6 @@ export const SearchForm = () => {
   const [search, setSearch] = useState(q);
   const [category, setCategory] = useState(categoryInParams);
 
-  console.log("search", search, "category", category);
-
   return (
     <form
       className="flex flex-row pb-4"

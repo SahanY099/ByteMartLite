@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Products\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Products\ProductStoreFrontListResource;
+use App\Http\Resources\Products\ProductStoreFrontDetailResource;
 
 class ProductStoreFrontController extends Controller
 {
@@ -16,5 +17,11 @@ class ProductStoreFrontController extends Controller
         $products = Product::latest()->limit(8)->get();
 
         return ProductStoreFrontListResource::collection($products);
+    }
+
+    public function show(Request $request, string $id)
+    {
+        $product = Product::findOrFail($id);
+        return new ProductStoreFrontDetailResource($product);
     }
 }

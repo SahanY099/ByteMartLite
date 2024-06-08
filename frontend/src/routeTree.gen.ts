@@ -23,6 +23,7 @@ import { Route as DashboardProductsIndexImport } from './routes/~dashboard/~prod
 import { Route as BrowsehomeIndexImport } from './routes/~_browse/~(home)/~index'
 import { Route as DashboardProductsProductIdEditImport } from './routes/~dashboard/~products/~$productId/~edit'
 import { Route as BrowseAccountAddressesNewRouteImport } from './routes/~_browse/~account/~addresses/~new/~route'
+import { Route as BrowseItemItemIdIndexImport } from './routes/~_browse/~item/~$itemId/~index'
 import { Route as BrowseAccountAddressesIndexImport } from './routes/~_browse/~account/~addresses/~index'
 import { Route as BrowseAccountAddressesAddressIdEditImport } from './routes/~_browse/~account/~addresses/~$addressId/~edit'
 
@@ -151,6 +152,13 @@ const BrowseAccountAddressesNewRouteRoute =
     ),
   )
 
+const BrowseItemItemIdIndexRoute = BrowseItemItemIdIndexImport.update({
+  path: '/item/$itemId/',
+  getParentRoute: () => BrowseRoute,
+} as any).lazy(() =>
+  import('./routes/~_browse/~item/~$itemId/~index.lazy').then((d) => d.Route),
+)
+
 const BrowseAccountAddressesIndexRoute =
   BrowseAccountAddressesIndexImport.update({
     path: '/addresses/',
@@ -227,6 +235,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseAccountAddressesIndexImport
       parentRoute: typeof BrowseAccountImport
     }
+    '/_browse/item/$itemId/': {
+      preLoaderRoute: typeof BrowseItemItemIdIndexImport
+      parentRoute: typeof BrowseImport
+    }
     '/_browse/account/addresses/new': {
       preLoaderRoute: typeof BrowseAccountAddressesNewRouteImport
       parentRoute: typeof BrowseAccountImport
@@ -264,6 +276,7 @@ export const routeTree = rootRoute.addChildren([
     ]),
     BrowseSearchRouteRoute,
     BrowsehomeIndexRoute,
+    BrowseItemItemIdIndexRoute,
   ]),
   DashboardRoute.addChildren([
     DashboardProductsIndexRoute,

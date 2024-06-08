@@ -5,7 +5,7 @@ namespace App\Http\Resources\Products;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductStoreFrontListResource extends JsonResource
+class ProductStoreFrontDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,14 +18,9 @@ class ProductStoreFrontListResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
-
-            $this->mergeWhen($request->query('view') === 'single_image', [
-                'image' => $this->getFirstMediaUrl('product-images'),
-            ]),
-
-            $this->mergeWhen($request->query('view') !== 'single_image', [
-                'images' => $this->getImages(),
-            ]),
+            'images' => $this->getImages(),
+            'description' => $this->description,
+            'category' => new CategoryResource($this->category),
         ];
     }
 

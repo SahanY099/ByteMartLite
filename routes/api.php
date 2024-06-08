@@ -80,8 +80,10 @@ Route::prefix('categories')->group(function () {
 });
 
 Route::prefix('products')->group(function () {
+    Route::get('/search', ProductStoreFrontSearchController::class);
+
     Route::controller(ProductStoreFrontController::class)->group(function () {
         Route::get('/', 'index');
+        Route::get('/{id}', 'show');
     });
-    Route::get('/search', ProductStoreFrontSearchController::class);
 });

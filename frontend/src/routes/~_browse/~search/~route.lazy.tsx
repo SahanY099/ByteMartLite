@@ -34,7 +34,7 @@ function Search() {
         </div>
         <Suspense
           fallback={
-            <div className="mx-auto grid  auto-cols-max grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="mx-auto grid auto-cols-max grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               <ProductCardSkeleton />
               <ProductCardSkeleton />
               <ProductCardSkeleton />
