@@ -33,8 +33,7 @@ const ImagePlaceholder = ({ main = false }: { main?: boolean }) => {
 };
 
 export const ProductImageUploaderToBeWorked = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [images, setImages] = useState<(File | string)[]>(
+  const [, setImages] = useState<(File | string)[]>(
     Array(5).fill("") as [File | string],
   );
 

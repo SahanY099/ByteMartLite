@@ -19,7 +19,7 @@ export const SortOrderForm = () => {
   const navigate = useNavigate({ from: routeApi.id });
   const { order, sort } = routeApi.useSearch();
 
-  const setSort = (sort: "name" | "price" | "rating") => {
+  const setSort = (sort: "name" | "price" | "created_at") => {
     navigate({
       search: (prev) => ({
         ...prev,
