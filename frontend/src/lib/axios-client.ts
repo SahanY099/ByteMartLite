@@ -2,9 +2,15 @@ import axios from "axios";
 
 import { useAuthStore } from "@/store/auth";
 
+const baseURL =
+  import.meta.env.VITE_NGROK_API_URL ??
+  `http://${window.location.hostname}:${import.meta.env.VITE_API_PORT}`;
+
 const axiosClient = axios.create({
-  // baseURL: `${import.meta.env.VITE_API_BASE_URL}`,
-  baseURL: `http://${window.location.hostname}:${import.meta.env.VITE_API_PORT}/api`,
+  baseURL: `${baseURL}/api`,
+  headers: {
+    "ngrok-skip-browser-warning": "69420",
+  },
 });
 
 axiosClient.interceptors.request.use((config) => {
