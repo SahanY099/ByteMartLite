@@ -26,7 +26,7 @@ export const SearchForm = () => {
 
   return (
     <form
-      className="flex flex-row pb-4"
+      className="flex flex-row gap-2 pb-4"
       onSubmit={(e) => {
         e.preventDefault();
         navigate({
@@ -35,7 +35,7 @@ export const SearchForm = () => {
       }}
     >
       <Select value={category} onValueChange={setCategory}>
-        <SelectTrigger className="mr-2 w-[180px]">
+        <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a category" />
         </SelectTrigger>
         <SelectContent>
@@ -51,19 +51,17 @@ export const SearchForm = () => {
         </SelectContent>
       </Select>
       <Input
-        placeholder="Search"
-        className="w-full rounded-r-none focus-visible:ring-0"
+        placeholder="Search..."
+        type="search"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className="w-full rounded-lg bg-background"
       />
-      <Button
-        size="icon"
-        variant="secondary"
-        type="submit"
-        className="rounded-l-none px-3"
-      >
-        <Search className="h-4 w-4" />
-      </Button>
+      <div>
+        <Button size="icon" variant="outline" type="submit">
+          <Search className="h-4 w-4" />
+        </Button>
+      </div>
     </form>
   );
 };

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Heart, ShoppingCart } from "lucide-react";
 
 import placeholderImage from "@/assets/placeholder.svg";
@@ -36,62 +37,69 @@ type ProductCardProps = {
   price: string;
 } & (CarouselProps | SingleImageProps);
 
-export const ProductCard = ({ name, price, ...props }: ProductCardProps) => {
+export const ProductCard = ({
+  id,
+  name,
+  price,
+  ...props
+}: ProductCardProps) => {
   return (
-    <Card className="max-w-64">
-      <CardContent className="p-4">
-        {(props.carousel == undefined || props.carousel) && (
-          <Carousel className="group relative w-full" opts={{ loop: true }}>
-            <CarouselContent>
-              {props.images.length > 0 ? (
-                props.images.map((image, index) => (
-                  <CarouselItem key={index}>
+    <Link to="/item/$itemId" params={{ itemId: id.toString() }}>
+      <Card className="max-w-64">
+        <CardContent className="p-4">
+          {(props.carousel == undefined || props.carousel) && (
+            <Carousel className="group relative w-full" opts={{ loop: true }}>
+              <CarouselContent>
+                {props.images.length > 0 ? (
+                  props.images.map((image, index) => (
+                    <CarouselItem key={index}>
+                      <img
+                        className="aspect-[4/3] rounded-xl object-cover"
+                        loading="lazy"
+                        src={image}
+                      />
+                    </CarouselItem>
+                  ))
+                ) : (
+                  <CarouselItem>
                     <img
                       className="aspect-[4/3] rounded-xl object-cover"
-                      loading="lazy"
-                      src={image}
+                      src={placeholderImage}
                     />
                   </CarouselItem>
-                ))
-              ) : (
-                <CarouselItem>
-                  <img
-                    className="aspect-[4/3] rounded-xl object-cover"
-                    src={placeholderImage}
-                  />
-                </CarouselItem>
+                )}
+              </CarouselContent>
+              {props.images.length > 1 && (
+                <>
+                  <CarouselPrevious className="absolute left-0.5 hidden opacity-0 transition-opacity ease-out group-hover:opacity-100 md:flex" />
+                  <CarouselNext className="absolute right-0.5 hidden opacity-0 transition-opacity ease-out group-hover:opacity-100 md:flex" />
+                  <CarouselDots className="absolute bottom-4 left-1/2 -translate-x-1/2" />
+                </>
               )}
-            </CarouselContent>
-            {props.images.length > 1 && (
-              <>
-                <CarouselPrevious className="absolute left-0.5 hidden opacity-0 transition-opacity ease-out group-hover:opacity-100 md:flex" />
-                <CarouselNext className="absolute right-0.5 hidden opacity-0 transition-opacity ease-out group-hover:opacity-100 md:flex" />
-                <CarouselDots className="absolute bottom-4 left-1/2 -translate-x-1/2" />
-              </>
-            )}
-          </Carousel>
-        )}
-        {props.carousel == false && (
-          <img
-            className="aspect-[4/3] rounded-xl object-cover"
-            loading="lazy"
-            src={props.image}
-          />
-        )}
-      </CardContent>
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-        <CardDescription>$ {price}</CardDescription>
-      </CardHeader>
-      <CardFooter className="flex flex-row justify-end gap-2">
-        <Button size="icon" variant="ghost">
-          <Heart className="h-4 w-4" />
-        </Button>
-        <Button size="icon" variant="ghost">
-          <ShoppingCart className="h-4 w-4" />
-        </Button>
-      </CardFooter>
-    </Card>
+            </Carousel>
+          )}
+          {props.carousel == false && (
+            <img
+              className="aspect-[4/3] rounded-xl object-cover"
+              loading="lazy"
+              src={props.image}
+            />
+          )}
+        </CardContent>
+        <CardHeader>
+          <CardTitle>{name}</CardTitle>
+          <CardDescription>$ {price}</CardDescription>
+        </CardHeader>
+        <CardFooter className="flex flex-row justify-end gap-2">
+          <Button size="icon" variant="ghost">
+            <Heart className="h-4 w-4" />
+          </Button>
+          <Button size="icon" variant="ghost">
+            <ShoppingCart className="h-4 w-4" />
+          </Button>
+        </CardFooter>
+      </Card>
+    </Link>
   );
 };
 

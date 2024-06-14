@@ -13,11 +13,11 @@ export const orderOptions = [
 ] as const;
 
 export const productSearchSchema = z.object({
-  q: z.string().catch(""),
+  q: z.string().optional().catch(""),
   category: z.string().optional(),
   sort: z.enum(["name", "price", "created_at"]).optional(),
   order: z.enum(["asc", "desc"]).optional(),
-  page: z.number().catch(1),
+  page: z.number().optional().catch(1),
 });
 
 export type ProductSearchData = z.infer<typeof productSearchSchema>;
