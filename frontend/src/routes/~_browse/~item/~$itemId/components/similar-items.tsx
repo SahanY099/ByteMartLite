@@ -1,5 +1,3 @@
-import { Link } from "@tanstack/react-router";
-
 import {
   Carousel,
   CarouselContent,
@@ -34,9 +32,7 @@ export const SimilarItems = ({ items }: SimilarItemsProps) => {
               key={index}
               className="basis-2/3 sm:basis-2/5 lg:basis-1/4 xl:basis-1/5"
             >
-              <Link to={`/item/${item.id}`}>
-                <ProductCard key={item.id} {...item} carousel={false} />
-              </Link>
+              <ProductCard key={item.id} {...item} carousel={false} />
             </CarouselItem>
           ))}
         </CarouselContent>

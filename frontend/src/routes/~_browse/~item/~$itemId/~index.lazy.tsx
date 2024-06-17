@@ -16,12 +16,16 @@ import { Separator } from "@/components/ui/separator";
 import { ImageCarousel } from "./components/image-carousel";
 import { SimilarItems, SimilarItemsSkeleton } from "./components/similar-items";
 
+import { useDebouncedAddToCart } from "@/lib/cart";
+
 export const Route = createLazyFileRoute("/_browse/item/$itemId/")({
   component: ProductDetails,
 });
 
 function ProductDetails() {
   const { productData, similarProducts } = Route.useLoaderData();
+
+  const addToCart = useDebouncedAddToCart(productData.id);
 
   return (
     <Container className="flex flex-col gap-2">
@@ -66,7 +70,11 @@ function ProductDetails() {
                 $ {productData.price}
               </span>
               <div className="flex flex-row items-center gap-2">
-                <Button className="flex-1" variant="secondary">
+                <Button
+                  className="flex-1"
+                  variant="secondary"
+                  onClick={() => addToCart()}
+                >
                   Add to Cart <ShoppingCart className="ml-4 h-4 w-4" />
                 </Button>
                 <Button className="flex-1">

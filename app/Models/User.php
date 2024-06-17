@@ -2,18 +2,22 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\Models\Cart\Cart;
+use App\Observers\UserObserver;
 use App\Models\Products\Product;
 use App\Models\Accounts\Address;
 
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
@@ -67,5 +71,10 @@ class User extends Authenticatable implements HasMedia
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function cart(): HasOne
+    {
+        return $this->hasOne(Cart::class);
     }
 }

@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import { useDebouncedAddToCart } from "@/lib/cart";
+
 type CarouselProps = {
   carousel?: true;
   images: string[];
@@ -43,9 +45,11 @@ export const ProductCard = ({
   price,
   ...props
 }: ProductCardProps) => {
+  const incrementQuantity = useDebouncedAddToCart(id);
+
   return (
-    <Link to="/item/$itemId" params={{ itemId: id.toString() }}>
-      <Card className="max-w-64">
+    <Card className="max-w-64">
+      <Link to="/item/$itemId" params={{ itemId: id.toString() }}>
         <CardContent className="p-4">
           {(props.carousel == undefined || props.carousel) && (
             <Carousel className="group relative w-full" opts={{ loop: true }}>
@@ -90,16 +94,19 @@ export const ProductCard = ({
           <CardTitle>{name}</CardTitle>
           <CardDescription>$ {price}</CardDescription>
         </CardHeader>
-        <CardFooter className="flex flex-row justify-end gap-2">
-          <Button size="icon" variant="ghost">
-            <Heart className="h-4 w-4" />
-          </Button>
-          <Button size="icon" variant="ghost">
-            <ShoppingCart className="h-4 w-4" />
-          </Button>
-        </CardFooter>
-      </Card>
-    </Link>
+      </Link>
+      <CardFooter className="flex flex-row justify-end gap-2">
+        <Button size="icon" variant="ghost">
+          <Heart className="h-4 w-4" />
+        </Button>
+        <Button size="icon" variant="ghost">
+          <ShoppingCart
+            className="h-4 w-4"
+            onClick={() => incrementQuantity()}
+          />
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

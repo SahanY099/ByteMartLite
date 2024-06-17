@@ -2,6 +2,7 @@ import { Container } from "@/components/container";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/user-menu";
+import { Cart } from "./cart";
 import { Search } from "./search";
 
 export const Header = () => {
@@ -11,6 +12,7 @@ export const Header = () => {
         <Logo />
         <div className="flex flex-row items-center gap-4">
           <Search />
+          <Cart />
           <ThemeToggle />
           <UserMenu />
         </div>

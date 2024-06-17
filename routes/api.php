@@ -1,17 +1,22 @@
 <?php
 
-use App\Http\Controllers\Products\ProductStoreFrontSearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\PasswordResetController;
+
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\AddressController;
+use App\Http\Controllers\Accounts\AdministrativeAreaController;
+
 use App\Http\Controllers\products\CategoryController;
-use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Products\ProductManagementController;
 use App\Http\Controllers\Products\ProductStoreFrontController;
-use App\Http\Controllers\Accounts\AdministrativeAreaController;
+use App\Http\Controllers\Products\ProductStoreFrontSearchController;
+
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Cart\CartItemController;
 
 
 Route::get('/user', function (Request $request) {
@@ -85,5 +90,21 @@ Route::prefix('products')->group(function () {
     Route::controller(ProductStoreFrontController::class)->group(function () {
         Route::get('/', 'index');
         Route::get('/{id}', 'show');
+    });
+});
+
+Route::prefix('cart')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::controller(CartController::class)->group(function () {
+            Route::get('/', 'index');
+        });
+        Route::prefix('cart-items')->group(function () {
+            Route::controller(CartItemController::class)->group(function () {
+                Route::post('/', 'store');
+                Route::delete('/', 'delete');
+                Route::post('/{id}', 'update');
+                Route::delete('/{id}', 'destroy');
+            });
+        });
     });
 });

@@ -1,7 +1,7 @@
 import { Category } from "@/types/categories";
 
 export type ProductData = {
-  id: string;
+  id: number;
   name: string;
   description: string;
   category: Category;
