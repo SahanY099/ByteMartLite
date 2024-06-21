@@ -20,12 +20,12 @@ export function ProductsPagination({ meta, links }: ProductsPaginationProps) {
   const paginationItems = getPaginationItems(meta.currentPage, meta.lastPage);
 
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
       <div className="text-xs text-muted-foreground">
-        Showing{" "}
+        Showing
         <strong>
           {meta.from}-{meta.to}
-        </strong>{" "}
+        </strong>
         of <strong>{meta.total}</strong> products
       </div>
       <Pagination className="mx-0 w-auto">

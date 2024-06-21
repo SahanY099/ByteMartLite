@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173', '*.ngrok-free.app'],
+    'allowed_origins' => ['http://localhost:5173', '*.ngrok-free.app', 'http://localhost:4173'],
 
     'allowed_origins_patterns' => [],
 

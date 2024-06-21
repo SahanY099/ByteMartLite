@@ -18,7 +18,7 @@ function Search() {
 
   return (
     <Container className="flex flex-row sm:justify-center">
-      <div className="flex w-full flex-col gap-2 py-4 max-sm:w-full sm:max-w-[528px] md:max-w-[800px] lg:max-w-[1072px]">
+      <div className="flex w-full flex-col gap-4 py-4 max-sm:w-full sm:max-w-[528px] md:max-w-[800px] lg:max-w-[1072px]">
         <SearchForm />
         <div className="flex w-full flex-row justify-between">
           <h1 className="text-lg font-normal tracking-tight">
@@ -34,7 +34,8 @@ function Search() {
         </div>
         <Suspense
           fallback={
-            <div className="mx-auto grid auto-cols-max grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid w-full grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-10 lg:gap-x-8">
+              <ProductCardSkeleton />
               <ProductCardSkeleton />
               <ProductCardSkeleton />
               <ProductCardSkeleton />
@@ -44,9 +45,9 @@ function Search() {
           <Await promise={products}>
             {(products) =>
               products.data.length ? (
-                <div className="mx-auto grid auto-cols-max grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {products.data.map((product) => (
-                    <ProductCard key={product.id} {...product} />
+                <div className="grid w-full grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-10 lg:gap-x-8">
+                  {products.data.map((product, i) => (
+                    <ProductCard key={product.id} {...product} index={i} />
                   ))}
                 </div>
               ) : (
@@ -55,7 +56,7 @@ function Search() {
             }
           </Await>
         </Suspense>
-        {/* </div> */}
+
         <Suspense>
           <Await promise={products}>
             {(data) => (

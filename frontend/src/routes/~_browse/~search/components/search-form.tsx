@@ -26,7 +26,7 @@ export const SearchForm = () => {
 
   return (
     <form
-      className="flex flex-row gap-2 pb-4"
+      className="flex flex-row gap-2"
       onSubmit={(e) => {
         e.preventDefault();
         navigate({

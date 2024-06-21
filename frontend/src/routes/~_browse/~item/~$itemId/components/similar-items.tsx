@@ -27,12 +27,12 @@ export const SimilarItems = ({ items }: SimilarItemsProps) => {
         className="w-full"
       >
         <CarouselContent>
-          {items.map((item, index) => (
+          {items.map((item, i) => (
             <CarouselItem
-              key={index}
+              key={i}
               className="basis-2/3 sm:basis-2/5 lg:basis-1/4 xl:basis-1/5"
             >
-              <ProductCard key={item.id} {...item} carousel={false} />
+              <ProductCard key={item.id} {...item} carousel={false} index={i} />
             </CarouselItem>
           ))}
         </CarouselContent>

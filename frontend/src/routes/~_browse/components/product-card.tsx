@@ -1,25 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
 
-import placeholderImage from "@/assets/placeholder.svg";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselDots,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ProductImages } from "./product-images";
 
 import { useDebouncedAddToCart } from "@/lib/cart";
 
@@ -37,95 +23,69 @@ type ProductCardProps = {
   id: number;
   name: string;
   price: string;
+  index: number;
 } & (CarouselProps | SingleImageProps);
 
 export const ProductCard = ({
   id,
   name,
   price,
+  index,
   ...props
 }: ProductCardProps) => {
   const incrementQuantity = useDebouncedAddToCart(id);
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, index * 100);
+
+    return () => clearTimeout(timer);
+  }, [index]);
+
+  if (!id || !isVisible) return <ProductCardSkeleton />;
+
   return (
-    <Card className="max-w-64">
-      <Link to="/item/$itemId" params={{ itemId: id.toString() }}>
-        <CardContent className="p-4">
-          {(props.carousel == undefined || props.carousel) && (
-            <Carousel className="group relative w-full" opts={{ loop: true }}>
-              <CarouselContent>
-                {props.images.length > 0 ? (
-                  props.images.map((image, index) => (
-                    <CarouselItem key={index}>
-                      <img
-                        className="aspect-[4/3] rounded-xl object-cover"
-                        loading="lazy"
-                        src={image}
-                      />
-                    </CarouselItem>
-                  ))
-                ) : (
-                  <CarouselItem>
-                    <img
-                      className="aspect-[4/3] rounded-xl object-cover"
-                      src={placeholderImage}
-                    />
-                  </CarouselItem>
-                )}
-              </CarouselContent>
-              {props.images.length > 1 && (
-                <>
-                  <CarouselPrevious className="absolute left-0.5 hidden opacity-0 transition-opacity ease-out group-hover:opacity-100 md:flex" />
-                  <CarouselNext className="absolute right-0.5 hidden opacity-0 transition-opacity ease-out group-hover:opacity-100 md:flex" />
-                  <CarouselDots className="absolute bottom-4 left-1/2 -translate-x-1/2" />
-                </>
-              )}
-            </Carousel>
-          )}
-          {props.carousel == false && (
-            <img
-              className="aspect-[4/3] rounded-xl object-cover"
-              loading="lazy"
-              src={props.image}
-            />
-          )}
-        </CardContent>
-        <CardHeader>
-          <CardTitle>{name}</CardTitle>
+    <div className="flex w-full flex-col animate-in fade-in-5">
+      <ProductImages {...props} productId={id} />
+
+      <div className="relative">
+        <Link to="/item/$itemId" params={{ itemId: id.toString() }}>
+          <h3 className="mt-4 text-sm font-medium text-primary">{name}</h3>
           <CardDescription>$ {price}</CardDescription>
-        </CardHeader>
-      </Link>
-      <CardFooter className="flex flex-row justify-end gap-2">
-        <Button size="icon" variant="ghost">
-          <Heart className="h-4 w-4" />
-        </Button>
-        <Button size="icon" variant="ghost">
+        </Link>
+
+        <Button
+          size="icon"
+          variant="ghost"
+          className="absolute bottom-0 right-0"
+        >
           <ShoppingCart
             className="h-4 w-4"
             onClick={() => incrementQuantity()}
           />
         </Button>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 };
 
 export const ProductCardSkeleton = () => {
   return (
-    <Card className="w-[254px]">
-      <CardContent className="w-full p-4">
-        <Skeleton className="aspect-[4/3] w-full rounded-xl" />
-      </CardContent>
-      <CardHeader>
-        <CardTitle>
-          <Skeleton className="h-6 w-full" />
-        </CardTitle>
-        <Skeleton className="h-5 w-20" />
-      </CardHeader>
-      <CardFooter className="flex flex-row justify-end gap-2">
-        <Skeleton className="h-7 w-7" />
-        <Skeleton className="h-7 w-7" />
-      </CardFooter>
-    </Card>
+    <div className="flex w-full flex-col">
+      <div className="pb-2">
+        <div className="aspect-square w-full overflow-hidden rounded-xl bg-zinc-100"></div>
+      </div>
+
+      <div className="flex flex-row items-end justify-between">
+        <div className="mt-4 flex flex-col gap-2">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-4 w-20" />
+        </div>
+        <Skeleton className="h-9 w-9" />
+      </div>
+    </div>
   );
 };
