@@ -45,9 +45,9 @@ export const ProductImages = trackWindowScroll(
                   <LazyLoadImage
                     src={image}
                     effect="blur"
+                    width="100%"
                     height="100%"
                     className="aspect-square overflow-hidden rounded-xl object-cover"
-                    wrapperClassName="aspect-square overflow-hidden rounded-xl object-cover"
                     scrollPosition={scrollPosition}
                   />
                 </CarouselItem>
@@ -72,9 +72,12 @@ export const ProductImages = trackWindowScroll(
           <LazyLoadImage
             src={props.images[0] || placeholderImage}
             effect="blur"
-            className="h-full w-full"
+            width="100%"
             height="100%"
-            wrapperClassName="aspect-square overflow-hidden rounded-xl object-cover mb-2"
+            className="aspect-square overflow-hidden rounded-xl object-cover"
+            wrapperProps={{
+              className: "inline",
+            }}
             placeholderSrc={placeholderImage}
             scrollPosition={scrollPosition}
           />
