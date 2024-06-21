@@ -58,7 +58,7 @@ class CartItemController extends Controller
         /** @var CartItem $cartItem */
         $cartItem = $cart->items->where('product_id', $id)->firstOrFail();
 
-        if ($cartItem->quantity == 1 || $complete || $cartItem->quantity < $quantity) {
+        if ($cartItem->quantity == 1 || $complete || $cartItem->quantity <= $quantity) {
             $cartItem->delete();
             return response('', 204);
         }

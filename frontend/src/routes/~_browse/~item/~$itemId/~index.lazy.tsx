@@ -25,7 +25,7 @@ export const Route = createLazyFileRoute("/_browse/item/$itemId/")({
 function ProductDetails() {
   const { productData, similarProducts } = Route.useLoaderData();
 
-  const addToCart = useDebouncedAddToCart(productData.id);
+  const { add: addToCart } = useDebouncedAddToCart(productData.id);
 
   return (
     <Container className="flex flex-col gap-2">

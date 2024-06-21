@@ -33,7 +33,7 @@ export const ProductCard = ({
   index,
   ...props
 }: ProductCardProps) => {
-  const incrementQuantity = useDebouncedAddToCart(id);
+  const { add: incrementQuantity } = useDebouncedAddToCart(id);
 
   const [isVisible, setIsVisible] = useState(false);
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAddToCart, useRemoveFromCart } from "@/services/cart";
 
 export const useDebouncedAddToCart = (productId: number) => {
-  const { mutateAsync } = useAddToCart();
+  const { mutateAsync, status } = useAddToCart();
 
   const [quantity, setQuantity] = useState(0);
   const debouncedQuantity = useDebounce(quantity, 500);
@@ -16,7 +16,7 @@ export const useDebouncedAddToCart = (productId: number) => {
     }
   }, [debouncedQuantity, productId, mutateAsync]);
 
-  const increment = (amount?: number) => {
+  const add = (amount?: number) => {
     if (amount) {
       setQuantity((prev) => prev + amount);
       return;
@@ -24,11 +24,11 @@ export const useDebouncedAddToCart = (productId: number) => {
     setQuantity((prev) => prev + 1);
   };
 
-  return increment;
+  return { add, status };
 };
 
 export const useDebouncedRemoveFromCart = (productId: number) => {
-  const { mutateAsync } = useRemoveFromCart();
+  const { mutateAsync, status } = useRemoveFromCart();
 
   const [quantity, setQuantity] = useState(0);
   const debouncedQuantity = useDebounce(quantity, 500);
@@ -49,5 +49,5 @@ export const useDebouncedRemoveFromCart = (productId: number) => {
     console.log(quantity);
   };
 
-  return remove;
+  return { remove, status };
 };

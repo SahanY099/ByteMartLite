@@ -3,6 +3,7 @@ import { ShoppingCart } from "lucide-react";
 import { LogoIcon } from "@/components/logo-icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
@@ -33,14 +34,14 @@ export const Cart = () => {
           <SheetTitle>My Cart</SheetTitle>
         </SheetHeader>
 
-        <Separator />
-
         {data && data.items.length > 0 ? (
-          <div className="flex flex-1 flex-col gap-4 overflow-auto">
-            {data.items.map((item) => (
-              <CartItem key={item.id} {...item} />
-            ))}
-          </div>
+          <ScrollArea>
+            <div className="flex flex-1 flex-col gap-4">
+              {data.items.map((item) => (
+                <CartItem key={item.id} {...item} />
+              ))}
+            </div>
+          </ScrollArea>
         ) : (
           <div className="flex flex-1 flex-col items-center justify-center">
             <LogoIcon className="mb-8 h-16 w-16 opacity-50" />
