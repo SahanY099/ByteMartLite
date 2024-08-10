@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Models\Cart\Cart;
+use App\Models\Orders\Order;
 use App\Observers\UserObserver;
 use App\Models\Products\Product;
 use App\Models\Accounts\Address;
@@ -76,5 +77,10 @@ class User extends Authenticatable implements HasMedia
     public function cart(): HasOne
     {
         return $this->hasOne(Cart::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 }

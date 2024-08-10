@@ -6,11 +6,11 @@ export type CartItem = {
   id: number;
   name: string;
   image: string;
-  total: number;
+  total: string;
   quantity: number;
 } & CartItemData;
 
 export type Cart = {
   items: CartItem[];
-  total: number;
+  total: string;
 };

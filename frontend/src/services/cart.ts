@@ -3,15 +3,17 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios-client";
 import { queryClient } from "@/lib/query-client";
 import { Cart, CartItemData } from "@/types/cart";
+import { queryOptions } from "@tanstack/react-query";
 
-export const useCart = () =>
-  useQuery({
-    queryKey: ["cart"],
-    queryFn: async () => {
-      const { data } = await axiosClient.get("cart");
-      return data.data as Cart;
-    },
-  });
+export const cartQueryOptions = queryOptions({
+  queryKey: ["cart"],
+  queryFn: async () => {
+    const { data } = await axiosClient.get("cart");
+    return data.data as Cart;
+  },
+});
+
+export const useCart = () => useQuery(cartQueryOptions);
 
 export const useAddToCart = () =>
   useMutation({

@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { useDeleteAddress, useMakeDefaultAddress } from "../services";
 import { Address } from "../types";
@@ -103,15 +104,15 @@ export function AddressCardSkeleton() {
   return (
     <Card className="w-full sm:w-72">
       <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-        <div className="h-4 flex-1 animate-pulse rounded bg-secondary sm:w-36"></div>
-        <div className="h-7 w-7 animate-pulse rounded bg-secondary"></div>
+        <Skeleton className="h-4 flex-1 sm:w-36"></Skeleton>
+        <Skeleton className="h-7 w-7"></Skeleton>
       </CardHeader>
       <CardContent className="flex flex-col gap-1">
-        <div className="h-4 w-full animate-pulse rounded bg-secondary"></div>
-        <div className="h-4 w-full animate-pulse rounded bg-secondary"></div>
-        <div className="h-4 w-full animate-pulse rounded bg-secondary"></div>
-        <div className="h-4 w-full animate-pulse rounded bg-secondary"></div>
-        <div className="h-4 w-full animate-pulse rounded bg-secondary"></div>
+        <Skeleton className="h-4 w-full"></Skeleton>
+        <Skeleton className="h-4 w-full"></Skeleton>
+        <Skeleton className="h-4 w-full"></Skeleton>
+        <Skeleton className="h-4 w-full"></Skeleton>
+        <Skeleton className="h-4 w-full"></Skeleton>
       </CardContent>
     </Card>
   );

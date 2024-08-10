@@ -18,6 +18,8 @@ use App\Http\Controllers\Products\ProductStoreFrontSearchController;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Cart\CartItemController;
 
+use App\Http\Controllers\CheckoutController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -106,5 +108,17 @@ Route::prefix('cart')->group(function () {
                 Route::delete('/{id}', 'destroy');
             });
         });
+    });
+});
+
+Route::prefix('checkout')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::controller(CheckoutController::class)->group(function () {
+            Route::post('/', 'store');
+        });
+
+    });
+    Route::controller(CheckoutController::class)->group(function () {
+        Route::post('/webhook', 'webhook');
     });
 });

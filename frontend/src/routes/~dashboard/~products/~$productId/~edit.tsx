@@ -98,16 +98,12 @@ export function UpdateProduct() {
         <Breadcrumb className="hidden sm:flex">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/dashboard">Dashboard</Link>
-              </BreadcrumbLink>
+              <BreadcrumbLink to="/dashboard">Dashboard</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/dashboard/products" search={{ page: 1 }}>
-                  Products
-                </Link>
+              <BreadcrumbLink to="/dashboard/products" search={{ page: 1 }}>
+                Products
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

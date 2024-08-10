@@ -17,13 +17,16 @@ import { Route as DashboardImport } from './routes/~dashboard'
 import { Route as BrowseImport } from './routes/~_browse'
 import { Route as AuthImport } from './routes/~_auth'
 import { Route as BrowseSearchRouteImport } from './routes/~_browse/~search/~route'
+import { Route as BrowseCheckoutImport } from './routes/~_browse/~checkout'
 import { Route as BrowseAccountImport } from './routes/~_browse/~account'
 import { Route as DashboardProductsNewRouteImport } from './routes/~dashboard/~products/~new/~route'
+import { Route as BrowseCheckoutPaymentRouteImport } from './routes/~_browse/~checkout/~payment/~route'
 import { Route as DashboardProductsIndexImport } from './routes/~dashboard/~products/~index'
 import { Route as BrowsehomeIndexImport } from './routes/~_browse/~(home)/~index'
 import { Route as DashboardProductsProductIdEditImport } from './routes/~dashboard/~products/~$productId/~edit'
 import { Route as BrowseAccountAddressesNewRouteImport } from './routes/~_browse/~account/~addresses/~new/~route'
 import { Route as BrowseItemItemIdIndexImport } from './routes/~_browse/~item/~$itemId/~index'
+import { Route as BrowseCheckoutinformationIndexImport } from './routes/~_browse/~checkout/~(information)/~index'
 import { Route as BrowseAccountAddressesIndexImport } from './routes/~_browse/~account/~addresses/~index'
 import { Route as BrowseAccountAddressesAddressIdEditImport } from './routes/~_browse/~account/~addresses/~$addressId/~edit'
 
@@ -36,6 +39,9 @@ const AuthResetPasswordRouteLazyImport = createFileRoute(
 const AuthLoginRouteLazyImport = createFileRoute('/_auth/login')()
 const AuthForgotPasswordRouteLazyImport = createFileRoute(
   '/_auth/forgot-password',
+)()
+const BrowseCheckoutSuccessRouteLazyImport = createFileRoute(
+  '/_browse/checkout/success',
 )()
 const BrowseAccountgeneralIndexLazyImport = createFileRoute(
   '/_browse/account/(general)/',
@@ -96,16 +102,42 @@ const BrowseSearchRouteRoute = BrowseSearchRouteImport.update({
   import('./routes/~_browse/~search/~route.lazy').then((d) => d.Route),
 )
 
+const BrowseCheckoutRoute = BrowseCheckoutImport.update({
+  path: '/checkout',
+  getParentRoute: () => BrowseRoute,
+} as any)
+
 const BrowseAccountRoute = BrowseAccountImport.update({
   path: '/account',
   getParentRoute: () => BrowseRoute,
 } as any)
+
+const BrowseCheckoutSuccessRouteLazyRoute =
+  BrowseCheckoutSuccessRouteLazyImport.update({
+    path: '/success',
+    getParentRoute: () => BrowseCheckoutRoute,
+  } as any).lazy(() =>
+    import('./routes/~_browse/~checkout/~success/~route.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const DashboardProductsNewRouteRoute = DashboardProductsNewRouteImport.update({
   path: '/products/new',
   getParentRoute: () => DashboardRoute,
 } as any).lazy(() =>
   import('./routes/~dashboard/~products/~new/~route.lazy').then((d) => d.Route),
+)
+
+const BrowseCheckoutPaymentRouteRoute = BrowseCheckoutPaymentRouteImport.update(
+  {
+    path: '/payment',
+    getParentRoute: () => BrowseCheckoutRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/~_browse/~checkout/~payment/~route.lazy').then(
+    (d) => d.Route,
+  ),
 )
 
 const DashboardProductsIndexRoute = DashboardProductsIndexImport.update({
@@ -159,6 +191,16 @@ const BrowseItemItemIdIndexRoute = BrowseItemItemIdIndexImport.update({
   import('./routes/~_browse/~item/~$itemId/~index.lazy').then((d) => d.Route),
 )
 
+const BrowseCheckoutinformationIndexRoute =
+  BrowseCheckoutinformationIndexImport.update({
+    path: '/',
+    getParentRoute: () => BrowseCheckoutRoute,
+  } as any).lazy(() =>
+    import('./routes/~_browse/~checkout/~(information)/~index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const BrowseAccountAddressesIndexRoute =
   BrowseAccountAddressesIndexImport.update({
     path: '/addresses/',
@@ -199,6 +241,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseAccountImport
       parentRoute: typeof BrowseImport
     }
+    '/_browse/checkout': {
+      preLoaderRoute: typeof BrowseCheckoutImport
+      parentRoute: typeof BrowseImport
+    }
     '/_browse/search': {
       preLoaderRoute: typeof BrowseSearchRouteImport
       parentRoute: typeof BrowseImport
@@ -227,13 +273,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProductsIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/_browse/checkout/payment': {
+      preLoaderRoute: typeof BrowseCheckoutPaymentRouteImport
+      parentRoute: typeof BrowseCheckoutImport
+    }
     '/dashboard/products/new': {
       preLoaderRoute: typeof DashboardProductsNewRouteImport
       parentRoute: typeof DashboardImport
     }
+    '/_browse/checkout/success': {
+      preLoaderRoute: typeof BrowseCheckoutSuccessRouteLazyImport
+      parentRoute: typeof BrowseCheckoutImport
+    }
     '/_browse/account/addresses/': {
       preLoaderRoute: typeof BrowseAccountAddressesIndexImport
       parentRoute: typeof BrowseAccountImport
+    }
+    '/_browse/checkout/(information)/': {
+      preLoaderRoute: typeof BrowseCheckoutinformationIndexImport
+      parentRoute: typeof BrowseCheckoutImport
     }
     '/_browse/item/$itemId/': {
       preLoaderRoute: typeof BrowseItemItemIdIndexImport
@@ -273,6 +331,11 @@ export const routeTree = rootRoute.addChildren([
       BrowseAccountAddressesNewRouteRoute,
       BrowseAccountgeneralIndexLazyRoute,
       BrowseAccountAddressesAddressIdEditRoute,
+    ]),
+    BrowseCheckoutRoute.addChildren([
+      BrowseCheckoutPaymentRouteRoute,
+      BrowseCheckoutSuccessRouteLazyRoute,
+      BrowseCheckoutinformationIndexRoute,
     ]),
     BrowseSearchRouteRoute,
     BrowsehomeIndexRoute,

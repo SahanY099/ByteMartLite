@@ -1,4 +1,6 @@
+import { Link } from "@tanstack/react-router";
 import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
 
 import { LogoIcon } from "@/components/logo-icon";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -19,8 +22,10 @@ import { useCart } from "@/services/cart";
 export const Cart = () => {
   const { data } = useCart();
 
+  const [open, setOpen] = useState(false);
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button size="icon" variant="outline" className="relative">
           <ShoppingCart className="h-4 w-4" />
@@ -29,6 +34,7 @@ export const Cart = () => {
           </Badge>
         </Button>
       </SheetTrigger>
+      <SheetDescription className="sr-only">Cart Sheet</SheetDescription>
       <SheetContent className="flex flex-col max-sm:w-screen">
         <SheetHeader>
           <SheetTitle>My Cart</SheetTitle>
@@ -60,7 +66,9 @@ export const Cart = () => {
           <span className="text-xl font-medium tracking-tight">
             $ {data?.total}
           </span>
-          <Button>Checkout </Button>
+          <Button asChild onClick={() => setOpen(false)}>
+            <Link to="/checkout">Checkout</Link>
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

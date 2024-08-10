@@ -211,7 +211,7 @@ export const AddressForm = ({
           <CardFooter className="border-t px-6 py-4">
             <LoadingButton
               loading={isPending}
-              className="w-full  sm:w-auto"
+              className="w-full sm:w-auto"
               type="submit"
             >
               {props.type == "update" ? "Update" : "Save"}
